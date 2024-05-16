@@ -19,12 +19,12 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "https://airtable.com/appOzDM0fPtHdHkdN/shrZ5uJRHuSqvwZdo"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "https://www.stockinsights.ai/"
   },
   "tabs": [
     {
@@ -39,14 +39,9 @@
       "url": "https://mintlify.com/docs"
     },
     {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://www.stockinsights.ai/blog"
     }
   ],
   "navigation": [
@@ -72,8 +67,7 @@
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "twitter": "https://twitter.com/stockinsightsai",
+    "linkedin": "https://www.linkedin.com/company/stockinsights-ai"
   }
 }
