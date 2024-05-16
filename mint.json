@@ -8,12 +8,12 @@
   },
 
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#B04425",
+    "light": "#B04425",
+    "dark": "#B04425",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#B04425",
+      "to": "#B04425"
     }
   },
   "topbarLinks": [
