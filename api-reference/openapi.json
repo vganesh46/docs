@@ -1,16 +1,13 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
+    "title": "Stockinsights APIs",
+    "description": "All the APIs of stockinsights",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://stockinsights-web.vercel.app"
     }
   ],
   "security": [
@@ -19,36 +16,142 @@
     }
   ],
   "paths": {
-    "/plants": {
+    "/api/in/v0/documents": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "summary": "Document Feed API",
+        "description": "The API returns the latest document/filings feed for a given document type.",
+        "operationId": "getDocumentFeed",
         "parameters": [
+          {
+            "name": "document_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "earnings-transcript",
+                "annual-report",
+                "announcement"
+              ]
+            },
+            "description": "Type of document (e.g., earnings-transcript)"
+          },
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Comma-separated exchange:ticker values. Example - NSE:ZOMATO, BSE:TCS",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "quarter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated Quarter values - (e.g., Q1,Q2)"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated Year values - (e.g., 2024,2023)"
+          },
+          {
+            "name": "sector",
+            "in": "query",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "required": false
+          },
           {
             "name": "limit",
             "in": "query",
-            "description": "The maximum number of results to return",
+            "description": "Number of items per page",
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
+              "maximum": 50
+            },
+            "required": false
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Document"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Unexpected error",
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -57,67 +160,149 @@
               }
             }
           }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
         },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://stockinsights-web.vercel.app"
             }
           },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+          "policies": {
+            "inbound": [
+              "api-key-inbound",
+              "rate-limit-inbound",
+              "set-headers-inbound"
+            ]
           }
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/api/in/v0/documents/announcement": {
+      "get": {
+        "summary": "Announcement Feed API",
+        "description": "The API returns the latest announcement feed from Indian stock exchanges, BSE and NSE. Each announcement is enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the announcement content. Returns paginated announcement feed based on provided filters sorted by date descending. If no parameters are sent, the API returns the latest paginated feed.",
+        "operationId": "getAnnouncementFeed",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
+            "name": "ticker",
+            "in": "query",
+            "description": "Comma-separated exchange:ticker values. Example - NSE:ZOMATO, BSE:TCS",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "from_date",
+            "in": "query",
+            "description": "Start date in YYYY-MM-DD format.",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "description": "End date in YYYY-MM-DD format.",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "announcement_type_id",
+            "in": "query",
+            "description": "Comma-separated Announcement Category IDs (Allowed Values - 1 to 26). Check the Category-ID Map - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "description": "Comma-separated sentiment values (Allowed values - positive, negative, neutral).",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "sector",
+            "in": "query",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Max results per query (max value = 50, default = 20).",
             "schema": {
               "type": "integer",
-              "format": "int64"
-            }
+              "maximum": 50
+            },
+            "required": false
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Required for pagination. Default=1",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "required": false
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
+          "200": {
+            "description": "Success response. Contains Paginated Announcements.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Announcement"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "items": {
+                        "$ref": "#/components/schemas/Meta"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "unexpected error",
+            "description": "Invalid request",
             "content": {
               "application/json": {
                 "schema": {
@@ -125,6 +310,542 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://stockinsights-web.vercel.app"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "api-key-inbound",
+              "rate-limit-inbound",
+              "set-headers-inbound"
+            ]
+          }
+        },
+        "x-internal": false
+      }
+    },
+    "/api/in/v0/documents/announcement/full-text-search": {
+      "get": {
+        "summary": "Announcement Text Search API",
+        "description": "The API takes a search query and returns the matching announcements based on provided filters sorted by date descending.",
+        "operationId": "searchAnnouncements",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Seach term",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Comma-separated exchange:ticker values. Example - NSE:ZOMATO, BSE:TCS",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "from_date",
+            "in": "query",
+            "description": "Start date in YYYY-MM-DD format.",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "description": "End date in YYYY-MM-DD format.",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "announcement_type_id",
+            "in": "query",
+            "description": "Comma-separated Announcement Category IDs (Allowed Values - 1 to 26). Check the Category-ID Map - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "description": "Comma-separated sentiment values (Allowed values - positive, negative, neutral).",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "sector",
+            "in": "query",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Max results per query (max value = 50, default = 20).",
+            "schema": {
+              "type": "integer",
+              "maximum": 50
+            },
+            "required": false
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Required for pagination. Default=1",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response. Contains Paginated Announcement Search results.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Announcement"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "items": {
+                        "$ref": "#/components/schemas/Meta"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://stockinsights-web.vercel.app"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "api-key-inbound",
+              "rate-limit-inbound",
+              "set-headers-inbound"
+            ]
+          }
+        },
+        "x-internal": false
+      }
+    },
+    "/api/in/v0/documents/earnings-transcript/{documentId}/ai-insights": {
+      "get": {
+        "summary": "Earnings transcript AI insights ",
+        "description": "The API returns the expanded version of earnings transcript document that contains the AI Generated Insights",
+        "operationId": "getEarningTranscriptInsights",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the earnings transcript document. The Document ID can be found in earnings-transcript Document feed"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Announcement"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://stockinsights-web.vercel.app"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "api-key-inbound",
+              "rate-limit-inbound",
+              "set-headers-inbound"
+            ]
+          }
+        }
+      }
+    },
+    "/api/in/v0/documents/full-text-search": {
+      "post": {
+        "summary": "Documents Text Search",
+        "description": "Search keywords across all the documents or a subset of documents using filters. Returns upto 100 search results sorted by latest date",
+        "operationId": "searchDocuments",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "description": "The search query"
+                  },
+                  "filters": {
+                    "type": "object",
+                    "description": "Search filters",
+                    "$ref": "#/components/schemas/DocumentSearchFilters"
+                  }
+                },
+                "required": [
+                  "query",
+                  "filters"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Search Result",
+                      "$ref": "#/components/schemas/DocumentWithSearchResults"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://stockinsights-web.vercel.app"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "api-key-inbound",
+              "rate-limit-inbound",
+              "set-headers-inbound"
+            ]
+          }
+        }
+      }
+    },
+    "/api/in/v0/documents/ai-search": {
+      "post": {
+        "summary": "Documents AI Search",
+        "description": "Ask any query to get the AI generated answer and the corresponding documents",
+        "operationId": "aiDcoumentSearch",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "description": "user's question"
+                  },
+                  "filters": {
+                    "type": "object",
+                    "description": "Search filters",
+                    "$ref": "#/components/schemas/DocumentSearchFilters"
+                  }
+                },
+                "required": [
+                  "query",
+                  "filters"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response. Contains the AI generated answer and the corresponding sources",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "response": {
+                          "type": "string",
+                          "description": "AI Generated Answer"
+                        },
+                        "sources": {
+                          "type": "array",
+                          "description": "Source documents based on which AI generated the answer",
+                          "items": {
+                            "$ref": "#/components/schemas/Document"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://stockinsights-web.vercel.app"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "api-key-inbound",
+              "ai-search-rate-limit-inbound-1",
+              "set-headers-inbound"
+            ]
           }
         }
       }
@@ -132,55 +853,478 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "DocumentSearchFilters": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "enum": [
+              "earnings-transcript",
+              "annual-report",
+              "announcement"
+            ],
+            "description": "Type of document (e.g., earnings-transcript)"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "tickers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Company Tickers. Format: exchange:ticker values. Example - [NSE:ZOMATO, BSE:TCS]"
+          },
+          "sectors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Sectors (based on Industry Classification) to filter by. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104"
+          },
+          "industries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Industries (based on Industry Classification) to filter by. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104"
+          },
+          "quarters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Quarters to filter by"
+          },
+          "years": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Years to filter by"
+          }
+        },
+        "required": [
+          "types"
+        ]
+      },
+      "ExchangeTicker": {
+        "type": "object",
+        "properties": {
+          "exchange": {
+            "type": "string",
+            "enum": [
+              "BSE",
+              "NSE"
+            ],
+            "description": "Exchange Name"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "Company ticker in the exchange"
+          },
+          "id": {
+            "type": "string",
+            "description": "Company ID/Code in the exchange. Not present for NSE"
+          },
+          "url": {
+            "type": "string",
+            "description": "Company URL in the exchange"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "Document": {
+        "type": "object",
+        "description": "Represents details of a company document. A document could be either earnings transcript, Annual Report or Announcement. Contains the link to the raw document and the AI insights of the document ",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal Document ID"
           },
-          {
-            "required": [
-              "id"
+          "type": {
+            "type": "string",
+            "enum": [
+              "earnings-transcript",
+              "annual-report",
+              "announcement"
             ],
+            "description": "Represents the type of document"
+          },
+          "pdf_link": {
+            "type": "string",
+            "description": "PDF Link of the document. A document can have either a pdf_link or html_link"
+          },
+          "html_link": {
+            "type": "string",
+            "description": "HTML Link of the document. A document can have either a pdf_link or html_link"
+          },
+          "ai_insights": {
             "type": "object",
+            "description": "Contains either the url or the data of AI Insights based on API invoked",
             "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+              "url": {
+                "type": "string",
+                "description": "If insights are present for the document, the url provides the API Path to the AI insights. Else the object is empty or null. Note: The url attribute is not present in AI Insights API response. Its present only in the Document Feed API Response"
+              }
+            }
+          },
+          "company_id": {
+            "type": "string",
+            "description": "Internal Company ID"
+          },
+          "company_name": {
+            "type": "string"
+          },
+          "ticker": {
+            "type": "string",
+            "description": ""
+          },
+          "exchange_tickers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExchangeTicker"
+            }
+          },
+          "year": {
+            "type": "string",
+            "description": "Document associated year"
+          },
+          "month": {
+            "type": "string",
+            "description": "Document associated month"
+          },
+          "quarter": {
+            "type": "string",
+            "description": "Document associated Quarter"
+          },
+          "published_date": {
+            "type": "string",
+            "description": "UTC Timestamp of the document published date-time",
+            "format": "date-time"
+          }
+        }
+      },
+      "DocumentWithSearchResults": {
+        "type": "object",
+        "description": "Represents details of a matching company document.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal Document ID"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "earnings-transcript",
+              "annual-report",
+              "announcement"
+            ],
+            "description": "Represents the type of document"
+          },
+          "pdf_link": {
+            "type": "string",
+            "description": "PDF Link of the document. A document can have either a pdf_link or html_link"
+          },
+          "html_link": {
+            "type": "string",
+            "description": "HTML Link of the document. A document can have either a pdf_link or html_link"
+          },
+          "ai_insights": {
+            "type": "object",
+            "description": "Contains either the url or the data of AI Insights based on API invoked",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "If insights are present for the document, the url provides the API Path to the AI insights. Else the object is empty or null. Note: The url attribute is not present in AI Insights API response. Its present only in the Document Feed API Response"
+              }
+            }
+          },
+          "company_id": {
+            "type": "string",
+            "description": "Internal Company ID"
+          },
+          "company_name": {
+            "type": "string"
+          },
+          "ticker": {
+            "type": "string",
+            "description": ""
+          },
+          "exchange_tickers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExchangeTicker"
+            }
+          },
+          "year": {
+            "type": "string",
+            "description": "Document associated year"
+          },
+          "month": {
+            "type": "string",
+            "description": "Document associated month"
+          },
+          "quarter": {
+            "type": "string",
+            "description": "Document associated Quarter"
+          },
+          "published_date": {
+            "type": "string",
+            "description": "UTC Timestamp of the document published date-time",
+            "format": "date-time"
+          },
+          "highlights": {
+            "type": "object",
+            "description": "Text in the document matching with the query",
+            "properties": {
+              "highlight_term": {
+                "type": "array",
+                "description": "query term and other similar terms",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "highlight_text": {
+                "type": "string",
+                "description": "matching text"
               }
             }
           }
-        ]
+        }
       },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+      "EarningsTranscriptWithAIInsights": {
+        "type": "object",
+        "description": "Represents details of a company document. A document could be either earnings transcript, Annual Report or Announcement. Contains the link to the raw document and the AI insights of the document ",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal Document ID"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "earnings-transcript",
+              "annual-report",
+              "announcement"
+            ],
+            "description": "Represents the type of document"
+          },
+          "pdf_link": {
+            "type": "string",
+            "description": "PDF Link of the document. A document can have either a pdf_link or html_link"
+          },
+          "html_link": {
+            "type": "string",
+            "description": "HTML Link of the document. A document can have either a pdf_link or html_link"
+          },
+          "ai_insights": {
+            "type": "object",
+            "description": "Contains either the url or the data of AI Insights based on API invoked",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "If insights are present for the document, the url provides the API Path to the AI insights. Else the object is empty or null. Note: The url attribute is not present in AI Insights API response. Its present only in the Document Feed API Response"
+              },
+              "data": {
+                "type": "object",
+                "description": "The AI Generated Insights of the document. Note: The data attribute is present only in AI Insights API response. THe Document Feed API Response returns only url",
+                "properties": {
+                  "quick_summary": {
+                    "type": "object",
+                    "description": "The quick summary of the document",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "sentiment": {
+                    "type": "object",
+                    "properties": {
+                      "positive": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "negative": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "overall_sentiment": {
+                        "type": "string"
+                      },
+                      "overall_sentiment_score": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "business_outlook": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "potential_risks": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "company_id": {
+            "type": "string",
+            "description": "Internal Company ID"
+          },
+          "company_name": {
+            "type": "string"
+          },
+          "ticker": {
+            "type": "string",
+            "description": ""
+          },
+          "exchange_tickers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExchangeTicker"
+            }
+          },
+          "year": {
+            "type": "string",
+            "description": "Document associated year"
+          },
+          "month": {
+            "type": "string",
+            "description": "Document associated month"
+          },
+          "quarter": {
+            "type": "string",
+            "description": "Document associated Quarter"
+          },
+          "published_date": {
+            "type": "string",
+            "description": "UTC Timestamp of the document published date-time",
+            "format": "date-time"
+          }
+        }
+      },
+      "Announcement": {
+        "type": "object",
+        "description": "Each announcement is enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the announcement content.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal ID of the announcement"
+          },
+          "type": {
+            "type": "string",
+            "description": "Document type. By default, the value is announcement"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "Internal ticker representation for the company."
+          },
+          "company_name": {
+            "type": "string"
+          },
+          "exchange_tickers": {
+            "description": "Contains the company ticker information in BSE, NSE.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExchangeTicker"
+            }
+          },
+          "source_link": {
+            "type": "string",
+            "description": "The link to the raw announcement document."
+          },
+          "ai_insights": {
+            "type": "object",
+            "properties": {
+              "announcement_type_id": {
+                "description": "Announcement category/type ID. Example - An announcement could be marked as Company Merger(ID=1)",
+                "type": "string"
+              },
+              "announcement_type": {
+                "description": "The category/type name. Example - An announcement could be marked as Company Merger(ID=1)",
+                "type": "string"
+              },
+              "summary_header": {
+                "type": "string",
+                "description": "AI-generated summary header for the announcement"
+              },
+              "summary_text": {
+                "type": "string",
+                "description": "AI-generated summary for the announcement"
+              },
+              "sentiment": {
+                "type": "string",
+                "description": "Sentiment of the announcement.",
+                "enum": [
+                  "positive",
+                  "negative",
+                  "neutral"
+                ]
+              }
+            }
+          },
+          "published_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC Timestamp of the announcement published date-time"
+          }
+        }
+      },
+      "Meta": {
         "type": "object",
         "properties": {
-          "error": {
+          "total_count": {
             "type": "integer",
-            "format": "int32"
+            "format": "int64",
+            "description": "Total Announcemnt count for the given request parameters."
           },
-          "message": {
-            "type": "string"
+          "page": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Current Page number."
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of Announcements in the current response."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "description": "Error status"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Error description"
+                }
+              }
+            }
           }
         }
       }

@@ -58,11 +58,14 @@
       "pages": ["api-reference/authentication"]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "India Data",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/india_endpoints/document-feed-api",
+        "api-reference/india_endpoints/documents-text-search",
+        "api-reference/india_endpoints/documents-ai-search",
+        "api-reference/india_endpoints/earnings-transcript-ai-insights",
+        "api-reference/india_endpoints/announcement-feed-api",
+        "api-reference/india_endpoints/announcement-text-search-api"
       ]
     }
   ],

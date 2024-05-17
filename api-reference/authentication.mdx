@@ -3,17 +3,15 @@ title: 'Authentication'
 description: 'How to authenticate requests to the API'
 ---
 
-## Welcome
-
 Each request to the API must be authenticated with a valid API key.
 
 <Note>
   If you don't have an API key, please send your request via [Contact Us](https://airtable.com/appOzDM0fPtHdHkdN/shrZ5uJRHuSqvwZdo)
 </Note>
 
-## Authentication
+## Access Control
 
-All API endpoints are authenticated using Authorization header and your dedicated API key. 
+API endpoints require authentication via the 'Authorization' header with a bearer token in the format 'Bearer <api_key>' for access. 
 
 ```json
 'Authorization': 'Bearer <api_key>'
