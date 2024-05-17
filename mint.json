@@ -47,11 +47,23 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
+      "pages": ["introduction", "overview"]
     },
     {
-      "group": "Essentials",
-      "pages": ["essentials/markdown", "essentials/code", "essentials/images", "essentials/settings", "essentials/navigation"]
+      "group": "AI-Assist",
+      "pages": ["ai-assist/ask-ai"]
+    },
+    {
+      "group": "Documents",
+      "pages": ["documents/feed", "documents/search", "documents/ai-insights"]
+    },
+    {
+      "group": "Views",
+      "pages": ["views/announcements-tracker"]
+    },
+    {
+      "group": "Features",
+      "pages": ["features/watchlist", "features/email-alerts"]
     },
     {
       "group": "API Documentation",
