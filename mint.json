@@ -42,30 +42,28 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "overview"]
-    },
-    {
-      "group": "AI-Assist",
-      "pages": ["ai-assist/ask-ai"]
-    },
-    {
-      "group": "Documents",
-      "pages": ["documents/feed", "documents/search", "documents/ai-insights"]
-    },
-    {
-      "group": "Views",
-      "pages": ["views/announcements-tracker"]
+      "pages": ["introduction", "getting-started","faq"]
     },
     {
       "group": "Features",
-      "pages": ["features/watchlist", "features/email-alerts"]
+      "pages": ["features/ask-ai","features/documents/search","features/documents/ai-insights","features/views/announcements-tracker","features/email-alerts"]
     },
     {
       "group": "API Documentation",
       "pages": ["api-reference/authentication"]
     },
     {
-      "group": "India Data",
+      "group": "India Market Data",
+      "pages": [
+        "api-reference/india_endpoints/document-feed-api",
+        "api-reference/india_endpoints/documents-text-search",
+        "api-reference/india_endpoints/documents-ai-search",
+        "api-reference/india_endpoints/earnings-transcript-ai-insights",
+        "api-reference/india_endpoints/announcement-feed-api"
+      ]
+    },
+    {
+      "group": "US Market Data",
       "pages": [
         "api-reference/india_endpoints/document-feed-api",
         "api-reference/india_endpoints/documents-text-search",
