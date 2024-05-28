@@ -65,11 +65,11 @@
     {
       "group": "US Market Data",
       "pages": [
-        "api-reference/india_endpoints/document-feed-api",
-        "api-reference/india_endpoints/documents-text-search",
-        "api-reference/india_endpoints/documents-ai-search",
-        "api-reference/india_endpoints/earnings-transcript-ai-insights",
-        "api-reference/india_endpoints/announcement-feed-api"
+        "api-reference/us_endpoints/document-feed-api",
+        "api-reference/us_endpoints/documents-text-search",
+        "api-reference/us_endpoints/documents-ai-search",
+        "api-reference/us_endpoints/earnings-transcript-ai-insights",
+        "api-reference/us_endpoints/announcement-feed-api"
       ]
     }
   ],
