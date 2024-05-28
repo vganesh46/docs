@@ -34,11 +34,6 @@
   ],
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://stockinsightsai.mintlify.app/introduction"
-    },
-    {
       "name": "Blog",
       "icon": "newspaper",
       "url": "https://www.stockinsights.ai/blog"
