@@ -46,7 +46,7 @@
     },
     {
       "group": "Features",
-      "pages": ["features/ai-assist","features/documents-search","features/documents-insights","features/announcements-tracker","features/email-alerts"]
+      "pages": ["features/ai-assist","features/filings-search","features/filings-ai-insights","features/announcements-tracker","features/email-alerts"]
     },
     {
       "group": "API Documentation",
