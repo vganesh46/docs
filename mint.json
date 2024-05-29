@@ -42,11 +42,11 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "getting-started","faq"]
+      "pages": ["introduction", "getting-started"]
     },
     {
       "group": "Features",
-      "pages": ["features/ask-ai","features/documents-search","features/documents-insights","features/announcements-tracker","features/email-alerts"]
+      "pages": ["features/ai-assist","features/documents-search","features/documents-insights","features/announcements-tracker","features/email-alerts"]
     },
     {
       "group": "API Documentation",
