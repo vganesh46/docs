@@ -1,66 +1,23 @@
 ---
 title: 'Announcements Tracker'
-description: 'The navigation field in mint.json defines the pages that go in the navigation menu'
-icon: 'map'
+description: 'Stay Updated on Company Updates with Smart Classifications'
 ---
 
-The navigation menu is the list of links on every website.
+## Overview
 
-You will likely update `mint.json` every time you add a new page. Pages do not show up automatically.
+Effortlessly stay updated on company developments with our intelligent announcements filing feed.
 
-## Navigation syntax
+## Key Benefits
 
-Our navigation syntax is recursive which means you can make nested navigation groups. You don't need to include `.mdx` in page names.
+1. Smart Classification: The feature employs intelligent classification to automatically categorize and label filings based on their content. This provides you with an organized and structured view of the information, facilitating easier navigation and analysis.
+2. Filter Noise: By intelligently filtering out irrelevant filings, the feature helps you focus on the most pertinent updates and disclosures, reducing noise.
+3. Notifications: Tailor the monitoring and alert system to your specific interests and requirements, enabling you to receive notifications for updates from specific companies and filing types, keeping you informed about the developments that matter most to you.
 
-<CodeGroup>
+## How Announcements Tracker Works
 
-```json Regular Navigation
-"navigation": [
-    {
-        "group": "Getting Started",
-        "pages": ["quickstart"]
-    }
-]
-```
+1. Smart Classification: The system analyzes the content of filings and automatically categorize them into pre-defined categories, based on content similarity.
+2. Noise Filtering: The feature filters out non-essential filings, ensuring that you only see updates that are significant.
 
-```json Nested Navigation
-"navigation": [
-    {
-        "group": "Getting Started",
-        "pages": [
-            "quickstart",
-            {
-                "group": "Nested Reference Pages",
-                "pages": ["nested-reference-page"]
-            }
-        ]
-    }
-]
-```
+## How to Use Announcements Tracker
 
-</CodeGroup>
-
-## Folders
-
-Simply put your MDX files in folders and update the paths in `mint.json`.
-
-For example, to have a page at `https://yoursite.com/your-folder/your-page` you would make a folder called `your-folder` containing an MDX file called `your-page.mdx`.
-
-<Warning>
-
-You cannot use `api` for the name of a folder unless you nest it inside another folder. Mintlify uses Next.js which reserves the top-level `api` folder for internal server calls. A folder name such as `api-reference` would be accepted.
-
-</Warning>
-
-```json Navigation With Folder
-"navigation": [
-    {
-        "group": "Group Name",
-        "pages": ["your-folder/your-page"]
-    }
-]
-```
-
-## Hidden Pages
-
-MDX files not included in `mint.json` will not show up in the sidebar but are accessible through the search bar and by linking directly to them.
+1. Add to Watchlist & Setup Notifications: You can tailor the notifications to your specific watchlist stocks, enabling you to receive email updates from specific companies.
