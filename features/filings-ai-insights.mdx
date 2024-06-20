@@ -1,66 +1,33 @@
 ---
 title: 'AI Generated Summaries'
-description: 'The navigation field in mint.json defines the pages that go in the navigation menu'
-icon: 'map'
+description: 'Effortless Insights from Earnings Calls and Annual Reports'
 ---
 
-The navigation menu is the list of links on every website.
+## Overview
 
-You will likely update `mint.json` every time you add a new page. Pages do not show up automatically.
+Navigate through Earnings Calls Transcripts & Annual Reports with AI-crafted summaries.
 
-## Navigation syntax
+## Key Benefits
 
-Our navigation syntax is recursive which means you can make nested navigation groups. You don't need to include `.mdx` in page names.
+1. Enhanced Readability: The summaries present complex information from filings and transcripts in a concise and easily digestible format, enhancing readability and making it more efficient to grasp key insights without getting bogged down by extensive technical details.
+2. Grasp Key Takeaways: Key topics and areas are identified and separated within the AI-generated summaries, allowing you to quickly grasp the crucial takeaways and focus on the most pertinent information.
+3. Identify Changes from Past Disclosures: By comparing the current summaries with past disclosures, you can easily identify and track changes in a company's risk factors, financial performance, or strategic outlook, facilitating better-informed decision-making.
 
-<CodeGroup>
+## How AI-Generated Summaries Work
 
-```json Regular Navigation
-"navigation": [
-    {
-        "group": "Getting Started",
-        "pages": ["quickstart"]
-    }
-]
-```
+1. Summary-Generation: The LLMs are fed the long-form content of the filings, extracting relevant information and key points.
+2. Prompt-Based: Utilizing a predefined prompt, the the LLM organizes it into a structured and concise summary. This ensures that the most important details and insights from the documents are highlighted effectively.
 
-```json Nested Navigation
-"navigation": [
-    {
-        "group": "Getting Started",
-        "pages": [
-            "quickstart",
-            {
-                "group": "Nested Reference Pages",
-                "pages": ["nested-reference-page"]
-            }
-        ]
-    }
-]
-```
 
-</CodeGroup>
+## How to Use AI-Generated Summaries
 
-## Folders
+1. Read the Long-Form Content: For a more in-depth understanding of the topic, please refer to the full transcripts and reports.
+2. Upcoming Features:
+    a. Citations: In future versions, we will provide citations for each section, allowing you to easily refer to the original content.
+    b. Custom Prompts: You will also have the ability to create and save your own prompts to generate personalized summaries based on your specific needs.
 
-Simply put your MDX files in folders and update the paths in `mint.json`.
 
-For example, to have a page at `https://yoursite.com/your-folder/your-page` you would make a folder called `your-folder` containing an MDX file called `your-page.mdx`.
+## FAQs
+Q: How accurate are the AI-generated summaries?
 
-<Warning>
-
-You cannot use `api` for the name of a folder unless you nest it inside another folder. Mintlify uses Next.js which reserves the top-level `api` folder for internal server calls. A folder name such as `api-reference` would be accepted.
-
-</Warning>
-
-```json Navigation With Folder
-"navigation": [
-    {
-        "group": "Group Name",
-        "pages": ["your-folder/your-page"]
-    }
-]
-```
-
-## Hidden Pages
-
-MDX files not included in `mint.json` will not show up in the sidebar but are accessible through the search bar and by linking directly to them.
+A: The AI-generated summaries are based on LLMs and are designed to summarize only based on the underlying transcripts/annual reports. However, we have observed that in rare cases, there is a possibility of hallucinations. We are actively working towards auto-identifying these from our end, but we request you to report any inaccuracies when found.
