@@ -50,7 +50,7 @@
     },
     {
       "group": "Solutions",
-      "pages": ["features/screener","features/custom-alerts","features/filings-ai-insights","features/announcements-tracker","features/email-alerts"]
+      "pages": ["solutions/screener","solutions/custom-alerts"]
     },
     {
       "group": "API Documentation",
