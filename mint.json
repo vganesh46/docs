@@ -49,6 +49,10 @@
       "pages": ["features/ai-assist","features/filings-search","features/filings-ai-insights","features/announcements-tracker","features/email-alerts"]
     },
     {
+      "group": "Solutions",
+      "pages": ["features/screener","features/custom-alerts","features/filings-ai-insights","features/announcements-tracker","features/email-alerts"]
+    },
+    {
       "group": "API Documentation",
       "pages": ["api-reference/authentication"]
     },
