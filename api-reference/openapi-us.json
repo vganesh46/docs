@@ -18,8 +18,8 @@
   "paths": {
     "/api/us/v0/documents": {
       "get": {
-        "summary": "Documents Feed API",
-        "description": "The API returns the latest document/filings feed for a given document type.",
+        "summary": "Filings Feed",
+        "description": "The Filings Feed API retrieves real-time updates on earnings call transcripts and SEC filings (e.g., 10-K, 10-Q, 8-K) based on the specified document type. Users can optionally filter results by sector, timeframe, or other parameters to facilitate targeted information retrieval.",
         "operationId": "getDocumentFeed",
         "parameters": [
           {
@@ -30,12 +30,12 @@
               "type": "string",
               "enum": ["earnings-transcript", "10-K", "8-K"]
             },
-            "description": "Type of document (e.g., earnings-transcript)"
+            "description": "The type of document to retrieve. Choose from 'earnings-transcript', '10-K', '8-K'."
           },
           {
             "name": "cik",
             "in": "query",
-            "description": "Comma-separated CIKs",
+            "description": "Comma-separated CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). To find CIK by a company name, visit [SEC EDGAR](https://www.sec.gov/edgar/searchedgar/cik.htm).",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -45,7 +45,7 @@
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values [here](https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0).",
             "schema": {
               "type": "string"
             },
@@ -54,7 +54,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values [here](https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131)",
             "schema": {
               "type": "string"
             },
@@ -65,23 +65,25 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Q1"
             },
-            "description": "Comma-separated Quarter values. Eg: Q1,Q2,Q3,Q4"
+            "description": "Comma-separated quarter values in the format Q1, Q2, Q3, Q4. Use this parameter to filter by specific quarters."
           },
           {
             "name": "year",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "2024"
             },
-            "description": "Comma-separated Year values. Format YYYY - (e.g., 2024,2023)"
+            "description": "Comma-separated year values in the format YYYY (e.g., 2024, 2023). Use this parameter to filter data by specific years."
           },
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination",
+            "description": "Page number for pagination. Specify the page number starting from 1.",
             "schema": {
               "type": "integer",
               "minimum": 1
@@ -91,7 +93,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of items per page",
+            "description": "Number of items to include per page. Use this parameter to limit the number of results returned per API call.",
             "schema": {
               "type": "integer",
               "maximum": 50
@@ -676,20 +678,20 @@
           },
           "ticker": {
             "type": "string",
-            "description": "Internal ticker of the company"
+            "description": "Company Ticker"
           },
           "year": {
             "type": "string",
-            "description": "Document associated year. Format YYYY"
+            "description": "Year associated with the document. Format YYYY"
           },
           "month": {
             "type": "string",
-            "description": "Document's associated month"
+            "description": "Month associated with the document"
           },
           "quarter": {
             "type": "string",
             "enum": ["Q1", "Q2", "Q3", "Q4"],
-            "description": "Document associated Quarter"
+            "description": "Quarter associated with the document"
           },
 
           "published_date": {
