@@ -316,15 +316,15 @@
     },
     "/api/us/v0/documents/embeddings": {
       "get": {
-        "summary": "Documents Embeddings",
-        "description": "Fetch all the document embeddings of a filing/document based on the query parameters",
+        "summary": "Filings Embeddings",
+        "description": "The Filings Embeddings API retrieves OpenAI embeddings for filings (earnings transcripts and 10-Ks) based on the specified document type and the CIK. Users can optionally filter results by year/quarter. These embeddings, created using text-embedding-3-small(https://platform.openai.com/docs/guides/embeddings/embedding-models) with a specific chunk length, are updated in our vector database as new filings are published. Users can utilize these embeddings to summarize documents, extract specific metrics, or perform advanced analyses.",
         "operationId": "getDocumentEmbeddings",
         "parameters": [
           {
             "name": "type",
             "in": "query",
             "required": true,
-            "description": "Type of the document/filing",
+            "description": "The type of document/filing to retrieve embeddings for. Choose from 'earnings-transcript', '10-K'",
             "schema": {
               "type": "string",
               "enum": ["earnings-transcript", "10-K"]
@@ -334,7 +334,7 @@
             "name": "cik",
             "in": "query",
             "required": true,
-            "description": "CIK of the company",
+            "description": "The CIK (Central Index Key) of the company. This should be a 10-digit number (include leading zeros if necessary). To find CIK by company name, visit [SEC EDGAR](https://www.sec.gov/edgar/searchedgar/cik.htm).",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -353,7 +353,7 @@
           {
             "name": "quarter",
             "in": "query",
-            "description": "Fiscal quarter of the document. Applicable for earnings-transcript document type",
+            "description": "The fiscal quarter of the document. This parameter is applicable only for the 'earnings-transcript' document type. Valid values are 'Q1', 'Q2', 'Q3', 'Q4'.",
             "schema": {
               "type": "string",
               "enum": ["Q1", "Q2", "Q3", "Q4"],
@@ -363,7 +363,7 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination. Optional, default=1",
+            "description": "The page number for pagination. This parameter is optional and defaults to 1 if not specified.",
             "schema": {
               "type": "integer",
               "example": 1
@@ -372,7 +372,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of results per page. Optional, default=100",
+            "description": "The number of results to return per page. This parameter is optional and defaults to 100 if not specified. Maximum value is 100.",
             "schema": {
               "type": "integer",
               "example": 100
@@ -381,7 +381,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response. Contains the list of chunks for given query vector",
+            "description": "Successful response. Contains text embeddings in a list broken by multiple chunks",
             "content": {
               "application/json": {
                 "schema": {
