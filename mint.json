@@ -59,15 +59,16 @@
     {
       "group": "India Market Data",
       "pages": [
-        "api-reference/india_endpoints/document-feed-api",
+        "api-reference/india_endpoints/documents-feed-api",
         "api-reference/india_endpoints/documents-text-search",
-        "api-reference/india_endpoints/announcement-feed-api"
+        "api-reference/india_endpoints/announcement-feed-api",
+        "api-reference/india_endpoints/announcement-text-search-api"
       ]
     },
     {
       "group": "US Market Data",
       "pages": [
-        "api-reference/us_endpoints/document-feed-api",
+        "api-reference/us_endpoints/documents-feed-api",
         "api-reference/us_endpoints/documents-embeddings-api",
         "api-reference/us_endpoints/documents-embeddings-search-api",
         "api-reference/us_endpoints/8k-feed-api"
