@@ -162,8 +162,8 @@
     },
     "/api/us/v0/documents/8-K": {
       "get": {
-        "summary": "8-K Feed API with AI tags",
-        "description": "The API returns the latest 8-K feed from SEC Edgar. Each 8-K is then enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the 8-K content. Returns paginated 8-K feed based on provided filters sorted by date descending. If no parameters are sent, the API returns the latest paginated feed.",
+        "summary": "8-K Enriched Feed",
+        "description": "The 8-K Enriched Feed API delivers a real-time stream of SEC 8-K filings, each enriched with AI-generated insights including summaries, category tags (drawn from a predefined set of categories), and sentiment tagging. This API supports various filtering options, enabling users to efficiently retrieve targeted information. It enables users to monitor daily updates on significant corporate events reported by companies, facilitating building notification systems or widgets for tracking key disclosures.",
         "operationId": "get8KFeed",
         "parameters": [
           {
@@ -215,7 +215,7 @@
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values in this [link](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104).",
             "schema": {
               "type": "string"
             },
@@ -224,7 +224,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values in this [link](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104).",
             "schema": {
               "type": "string"
             },
