@@ -1,0 +1,915 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Stockinsights APIs",
+    "description": "All the APIs of stockinsights",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://stockinsights.ai"
+    }
+  ],
+  "securit": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/us/v0/documents": {
+      "get": {
+        "summary": "Document Feed API",
+        "description": "The API returns the latest document/filings feed for a given document type.",
+        "operationId": "getDocumentFeed",
+        "parameters": [
+          {
+            "name": "document_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["earnings-transcript", "10-K", "8-K"]
+            },
+            "description": "Type of document (e.g., earnings-transcript)"
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "Comma-separated CIKs",
+            "schema": {
+              "type": "string",
+              "example": "0001045810"
+            },
+            "required": false
+          },
+          {
+            "name": "sector",
+            "in": "query",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "quarter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated Quarter values. Eg: Q1,Q2,Q3,Q4"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated Year values. Format YYYY - (e.g., 2024,2023)"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "type": "integer",
+              "maximum": 50
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["success"]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Document"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/us/v0/documents/8-K": {
+      "get": {
+        "summary": "8-K Feed API with AI tags",
+        "description": "The API returns the latest 8-K feed from SEC Edgar. Each 8-K is then enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the 8-K content. Returns paginated 8-K feed based on provided filters sorted by date descending. If no parameters are sent, the API returns the latest paginated feed.",
+        "operationId": "get8KFeed",
+        "parameters": [
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "Comma-separated CIK values",
+            "schema": {
+              "type": "string",
+              "example": "0001045810"
+            },
+            "required": false
+          },
+          {
+            "name": "from_date",
+            "in": "query",
+            "description": "Start date in YYYY-MM-DD format.",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "description": "End date in YYYY-MM-DD format.",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "filing_8k_type_id",
+            "in": "query",
+            "description": "Comma-separated 8K Category IDs (Allowed Values - 1 to 26). Check the Category-ID Map - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=456483579#gid=456483579",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "sentiment",
+            "in": "query",
+            "description": "Comma-separated sentiment values (Allowed values - positive, negative, neutral).",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "sector",
+            "in": "query",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Max results per query (max value = 50, default = 20).",
+            "schema": {
+              "type": "integer",
+              "maximum": 50
+            },
+            "required": false
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Required for pagination. Default=1",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response. Contains Paginated 8-K Documents.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["success"]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/8-K"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "items": {
+                        "$ref": "#/components/schemas/Meta"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-internal": false
+      }
+    },
+    "/api/us/v0/documents/embeddings": {
+      "get": {
+        "summary": "Fetch document embeddings",
+        "description": "Fetch all the document embeddings of a filing/document based on the query parameters",
+        "operationId": "getDocumentEmbeddings",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "Type of the document/filing",
+            "schema": {
+              "type": "string",
+              "enum": ["earnings-transcript", "10-K"]
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "required": true,
+            "description": "CIK of the company",
+            "schema": {
+              "type": "string",
+              "example": "0001045810"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "description": "Year of the document/filing. Format - YYYY",
+            "schema": {
+              "type": "string",
+              "example": "2023"
+            }
+          },
+          {
+            "name": "quarter",
+            "in": "query",
+            "description": "Fiscal quarter of the document. Applicable for earnings-transcript document type",
+            "schema": {
+              "type": "string",
+              "enum": ["Q1", "Q2", "Q3", "Q4"],
+              "example": "Q4"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination. Optional, default=1",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results per page. Optional, default=100",
+            "schema": {
+              "type": "integer",
+              "example": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response. Contains the list of chunks for given query vector",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Status code"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DocumentChunkWithEmbedding"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-internal": false
+      }
+    },
+    "/api/us/v0/documents/embeddings-search": {
+      "post": {
+        "summary": "Get filing chunks for the given query vector ",
+        "description": "For a given query vector, returns the chunks of filings from earnings transcripts and 10-Ks matching the vector",
+        "operationId": "documentEmbeddingSearch",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["query_vector"],
+                "properties": {
+                  "query_vector": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "description": "The vector representation of the query"
+                  },
+                  "top_k": {
+                    "type": "integer",
+                    "default": 10,
+                    "maximum": 100,
+                    "description": "Number of top matching docs in the response. Optional. Default=10, Max=100"
+                  },
+                  "filters": {
+                    "type": "object",
+                    "description": "Filters can be used to narrow the search scope. For example, the search can be limited to few CIKs only. Without filters, search will be performed across all the filings",
+                    "properties": {
+                      "types": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": ["earnings-transcript", "10-K"]
+                        },
+                        "description": "Type of filings/documents."
+                      },
+                      "ciks": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "0001045810"
+                        },
+                        "maxItems": 100,
+                        "description": "CIKs of the companies. Max 100 ciks"
+                      },
+                      "sectors": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "maxItems": 5,
+                        "description": "Sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0"
+                      },
+                      "industries": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "maxItems": 5,
+                        "description": "Industries (based on Industry Classification) to filter by. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131"
+                      },
+                      "years": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[0-9]{4}$"
+                        },
+                        "description": "Year of the filing. Format - YYYY"
+                      },
+                      "quarters": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": ["Q1", "Q2", "Q3", "Q4"]
+                        },
+                        "description": "Quarter of the filing. Only for earnings-transcript"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response. Contains the list of chunks for given query vector",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Status code"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DocumentChunkWithScore"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "status": "success",
+                      "data": [
+                        {
+                          "text": "It's Second, we laid the foundation to be a three-chip data center scale computing company with GPUs, DPUs and CPUs. Third, AI is the most powerful technology force of our time. We partner with cloud and consumer Internet companies to scale out and commercialize AI-powered services. And we're democratizing AI for every enterprise and every industry.",
+                          "metadata": {
+                            "chunk_num": "18"
+                          },
+                          "document": {
+                            "type": "earnings-transcript",
+                            "published_date": "2021-05-27T01:40:47.000Z",
+                            "year": "2022",
+                            "quarter": "Q1",
+                            "link": "https://stockinsights.ai/us/filings/earnings-transcript/64428b8954ef6b435cdc137c/content"
+                          },
+                          "company": {
+                            "company_name": "Nvidia Corp",
+                            "ticker": "NVDA",
+                            "cik": "0001045810"
+                          },
+                          "similarity_score": 0.9295221567153931
+                        },
+                        {
+                          "text": "And we containerize them into our stack. We call it NVIDIA AI Enterprise. And the way we go to market with it is that think of that NVIDIA AI Enterprise now as a run time like an operating system, it's an operating system for artificial intelligence.",
+                          "metadata": {
+                            "chunk_num": "16"
+                          },
+                          "document": {
+                            "type": "earnings-transcript",
+                            "published_date": "2024-02-22T10:58:00.000Z",
+                            "year": "2024",
+                            "quarter": "Q4",
+                            "link": "https://stockinsights.ai/us/filings/earnings-transcript/65d811ca8ac10234b0fbd253/content"
+                          },
+                          "company": {
+                            "id": "epPs1xy7IL",
+                            "company_name": "Nvidia Corp",
+                            "ticker": "NVDA",
+                            "cik": "0001045810"
+                          },
+                          "similarity_score": 0.9289319515228271
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-internal": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Document": {
+        "type": "object",
+        "description": "Represents details of a document/filing of a company. A document could be either earnings transcript, 10-K or 8-k. Contains the link to the raw document and the AI insights of the document ",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal Document ID"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["earnings-transcript", "10-K", "8-K"],
+            "description": "Represents the type of document"
+          },
+          "pdf_link": {
+            "type": "string",
+            "description": "PDF Link of the document. A document can have either a pdf_link or html_link"
+          },
+          "html_link": {
+            "type": "string",
+            "description": "HTML Link of the document. A document can have either a pdf_link or html_link"
+          },
+          "ai_insights": {
+            "type": "object",
+            "description": "Contains either the url or the data of AI Insights based on API invoked",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "If insights are present for the document, the url provides the API Path to the AI insights. Else the object is empty or null. Note: The url attribute is not present in AI Insights API response. Its present only in the Document Feed API Response"
+              }
+            }
+          },
+          "cik": {
+            "type": "string",
+            "description": "Company CIK",
+            "example": "0001045810"
+          },
+          "company_id": {
+            "type": "string",
+            "description": "Internal Company ID"
+          },
+          "company_name": {
+            "type": "string"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "Internal ticker of the company"
+          },
+          "year": {
+            "type": "string",
+            "description": "Document associated year. Format YYYY"
+          },
+          "month": {
+            "type": "string",
+            "description": "Document's associated month"
+          },
+          "quarter": {
+            "type": "string",
+            "enum": ["Q1", "Q2", "Q3", "Q4"],
+            "description": "Document associated Quarter"
+          },
+
+          "published_date": {
+            "type": "string",
+            "description": "UTC Timestamp of the document published date-time",
+            "format": "date-time"
+          }
+        }
+      },
+      "8-K": {
+        "type": "object",
+        "description": "Each 8-K document is enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the 8-K content.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal ID of the 8-K document"
+          },
+          "type": {
+            "type": "string",
+            "description": "Document type. By default, the value is 8-K"
+          },
+          "cik": {
+            "type": "string",
+            "description": "CIK of the company.",
+            "example": "0001045810"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "Internal ticker representation for the company."
+          },
+          "company_name": {
+            "type": "string",
+            "description": "Company name."
+          },
+          "source_link": {
+            "type": "string",
+            "description": "The link to the raw 8-K document."
+          },
+          "ai_insights": {
+            "type": "object",
+            "properties": {
+              "filing_8k_type_id": {
+                "description": "8-K category/type ID. Example - A 8-K filing could be marked as Company Merger(ID=1)",
+                "type": "string"
+              },
+              "filing_8k_type": {
+                "description": "The category/type name. Example - A 8-K filing could be marked as Company Merger(ID=1)",
+                "type": "string"
+              },
+              "summary_header": {
+                "type": "string",
+                "description": "AI-generated summary header for the 8-K"
+              },
+              "summary_text": {
+                "type": "string",
+                "description": "AI-generated summary for the 8-K"
+              },
+              "sentiment": {
+                "type": "string",
+                "description": "Sentiment of the 8-K.",
+                "enum": ["positive", "negative", "neutral"]
+              }
+            }
+          },
+          "published_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC Timestamp of the 8-K published date-time"
+          }
+        }
+      },
+      "DocumentChunk": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The chunk's text"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "chunk_num": {
+                "type": "string",
+                "description": "Identifier of the chunk in the document"
+              }
+            }
+          },
+          "document": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Filing type"
+              },
+              "published_date": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Filing date"
+              },
+              "year": {
+                "type": "string",
+                "description": "Year of the filing"
+              },
+              "quarter": {
+                "type": "string",
+                "enum": ["Q1", "Q2", "Q3", "Q4"],
+                "description": "Quarter of the filing"
+              },
+              "link": {
+                "type": "string",
+                "description": "URL of the document"
+              }
+            }
+          },
+          "company": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Internal representation of ID"
+              },
+              "company_name": {
+                "type": "string",
+                "description": "Company Name"
+              },
+              "ticker": {
+                "type": "string",
+                "description": "Internal ticker of the company"
+              },
+              "cik": {
+                "type": "string",
+                "description": "CIK of the company",
+                "example": "0001045810"
+              }
+            }
+          }
+        }
+      },
+      "DocumentChunkWithScore": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DocumentChunk"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "similarity_score": {
+                "type": "number",
+                "description": "Similarity score"
+              }
+            }
+          }
+        ]
+      },
+      "DocumentChunkWithEmbedding": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DocumentChunk"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "embedding": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "description": "Vector Embedding of the chunk"
+              }
+            }
+          }
+        ]
+      },
+      "Meta": {
+        "type": "object",
+        "properties": {
+          "total_count": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total item count for the given request."
+          },
+          "page": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Current Page number."
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of items in the current response."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "description": "Error status"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Error description"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
