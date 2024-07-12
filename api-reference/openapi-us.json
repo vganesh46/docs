@@ -197,7 +197,7 @@
           {
             "name": "filing_8k_type_id",
             "in": "query",
-            "description": "Comma-separated 8K Category IDs (Allowed Values - 1 to 26). Check the Category-ID Map - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=456483579#gid=456483579",
+            "description": "Comma-separated 8K Category IDs (Allowed Values - 1 to 26). Check the Category-ID [Mapping](https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=456483579#gid=456483579).",
             "schema": {
               "type": "string"
             },
