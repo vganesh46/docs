@@ -10,7 +10,7 @@
       "url": "https://stockinsights-ai-us-main-e36fe38.d2.zuplo.dev"
     }
   ],
-  "securit": [
+  "security": [
     {
       "bearerAuth": []
     }
@@ -18,7 +18,7 @@
   "paths": {
     "/api/us/v0/documents": {
       "get": {
-        "summary": "Document Feed API",
+        "summary": "Documents Feed API",
         "description": "The API returns the latest document/filings feed for a given document type.",
         "operationId": "getDocumentFeed",
         "parameters": [
@@ -314,7 +314,7 @@
     },
     "/api/us/v0/documents/embeddings": {
       "get": {
-        "summary": "Fetch document embeddings",
+        "summary": "Documents Embeddings",
         "description": "Fetch all the document embeddings of a filing/document based on the query parameters",
         "operationId": "getDocumentEmbeddings",
         "parameters": [
@@ -439,7 +439,7 @@
     },
     "/api/us/v0/documents/embeddings-search": {
       "post": {
-        "summary": "Get filing chunks for the given query vector ",
+        "summary": "Documents Embeddings Search",
         "description": "For a given query vector, returns the chunks of filings from earnings transcripts and 10-Ks matching the vector",
         "operationId": "documentEmbeddingSearch",
         "requestBody": {

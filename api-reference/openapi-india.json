@@ -18,7 +18,7 @@
   "paths": {
     "/api/in/v0/documents": {
       "get": {
-        "summary": "Document Feed API",
+        "summary": "Documents Feed API",
         "description": "The API returns the latest document/filings feed for a given document type.",
         "operationId": "getDocumentFeed",
         "parameters": [
@@ -182,7 +182,7 @@
     },
     "/api/in/v0/documents/announcement": {
       "get": {
-        "summary": "Announcement Feed API",
+        "summary": "Announcements Feed API",
         "description": "The API returns the latest announcement feed from Indian stock exchanges, BSE and NSE. Each announcement is enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the announcement content. Returns paginated announcement feed based on provided filters sorted by date descending. If no parameters are sent, the API returns the latest paginated feed.",
         "operationId": "getAnnouncementFeed",
         "parameters": [
@@ -354,7 +354,7 @@
     },
     "/api/in/v0/documents/announcement/full-text-search": {
       "get": {
-        "summary": "Announcement Text Search API",
+        "summary": "Announcements Text Search API",
         "description": "The API takes a search query and returns the matching announcements based on provided filters sorted by date descending.",
         "operationId": "searchAnnouncements",
         "parameters": [
