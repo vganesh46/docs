@@ -66,7 +66,7 @@
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values in this [link](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104)",
             "schema": {
               "type": "string"
             },
@@ -75,7 +75,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values in this [link](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104)",
             "schema": {
               "type": "string"
             },
