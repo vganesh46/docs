@@ -317,7 +317,7 @@
     "/api/us/v0/documents/embeddings": {
       "get": {
         "summary": "Filings Embeddings",
-        "description": "The Filings Embeddings API retrieves OpenAI embeddings for filings (earnings transcripts and 10-Ks) based on the specified document type and the CIK. Users can optionally filter results by year/quarter. These embeddings, created using text-embedding-3-small(https://platform.openai.com/docs/guides/embeddings/embedding-models) with a specific chunk length, are updated in our vector database as new filings are published. Users can utilize these embeddings to summarize documents, extract specific metrics, or perform advanced analyses.",
+        "description": "The Filings Embeddings API retrieves OpenAI embeddings for filings (earnings transcripts and 10-Ks) based on the specified document type and the CIK. Users can optionally filter results by year/quarter. These embeddings, created using [text-embedding-3-small](https://platform.openai.com/docs/guides/embeddings/embedding-models) with a specific chunk length, are updated in our vector database as new filings are published. Users can utilize these embeddings to summarize documents, extract specific metrics, or perform advanced analyses.",
         "operationId": "getDocumentEmbeddings",
         "parameters": [
           {
