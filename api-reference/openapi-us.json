@@ -441,8 +441,8 @@
     },
     "/api/us/v0/documents/embeddings-search": {
       "post": {
-        "summary": "Documents Embeddings Search",
-        "description": "For a given query vector, returns the chunks of filings from earnings transcripts and 10-Ks matching the vector",
+        "summary": "Filings Embeddings Search",
+        "description": "The Filings Embeddings Search API retrieves the nearest chunks of text from our database for specified filings (earnings transcripts and 10-Ks) based on a given query vector. This functionality supports applications like building search engines, text tagging, and more, utilizing the associated text from these financial filings.",
         "operationId": "documentEmbeddingSearch",
         "requestBody": {
           "required": true,
@@ -457,17 +457,17 @@
                     "items": {
                       "type": "number"
                     },
-                    "description": "The vector representation of the query"
+                    "description": "OpenAI embedding of the query (of size 1536) generated using the text-embedding-3-small."
                   },
                   "top_k": {
                     "type": "integer",
                     "default": 10,
                     "maximum": 100,
-                    "description": "Number of top matching docs in the response. Optional. Default=10, Max=100"
+                    "description": "Number of top matching chunks to return in the response. Optional. Default=10, Max=100"
                   },
                   "filters": {
                     "type": "object",
-                    "description": "Filters can be used to narrow the search scope. For example, the search can be limited to few CIKs only. Without filters, search will be performed across all the filings",
+                    "description": "Filters to narrow the search scope. For example, the search can be limited to few CIKs only. Without filters, search will be performed across all the filings",
                     "properties": {
                       "types": {
                         "type": "array",
@@ -475,7 +475,7 @@
                           "type": "string",
                           "enum": ["earnings-transcript", "10-K"]
                         },
-                        "description": "Type of filings/documents."
+                        "description": "Type of filings/documents to look for similar chunks."
                       },
                       "ciks": {
                         "type": "array",
@@ -484,7 +484,7 @@
                           "example": "0001045810"
                         },
                         "maxItems": 100,
-                        "description": "CIKs of the companies. Max 100 ciks"
+                        "description": "CIKs (Central Index Keys) of companies to include in the search. Max 100 ciks"
                       },
                       "sectors": {
                         "type": "array",
@@ -492,7 +492,7 @@
                           "type": "string"
                         },
                         "maxItems": 5,
-                        "description": "Sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0"
+                        "description": "Sectors (based on Industry Classification) to filter by. Check the valid values in the [link](https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0)"
                       },
                       "industries": {
                         "type": "array",
@@ -500,7 +500,7 @@
                           "type": "string"
                         },
                         "maxItems": 5,
-                        "description": "Industries (based on Industry Classification) to filter by. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131"
+                        "description": "Industries (based on Industry Classification) to filter by. Check the valid values in the [link](https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131)"
                       },
                       "years": {
                         "type": "array",
@@ -508,15 +508,16 @@
                           "type": "string",
                           "pattern": "^[0-9]{4}$"
                         },
-                        "description": "Year of the filing. Format - YYYY"
+                        "description": "Year of the filings to include in the search. Format - YYYY"
                       },
                       "quarters": {
                         "type": "array",
                         "items": {
                           "type": "string",
-                          "enum": ["Q1", "Q2", "Q3", "Q4"]
+                          "enum": ["Q1", "Q2", "Q3", "Q4"],
+                          "example": "Q4"
                         },
-                        "description": "Quarter of the filing. Only for earnings-transcript"
+                        "description": "Quarters to include in the search . Only applicable for earnings-transcript type"
                       }
                     }
                   }
