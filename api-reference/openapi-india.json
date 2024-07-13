@@ -18,8 +18,8 @@
   "paths": {
     "/api/in/v0/documents": {
       "get": {
-        "summary": "Documents Feed API",
-        "description": "The API returns the latest document/filings feed for a given document type.",
+        "summary": "Filings Feed",
+        "description": "The Filings Feed API retrieves real-time updates on earnings call transcripts and other filings (e.g., Annual Reports, Corporate Announcements) based on the specified document type. Users can optionally filter results by sector, timeframe, or other parameters to facilitate targeted information retrieval.",
         "operationId": "getDocumentFeed",
         "parameters": [
           {
@@ -34,14 +34,15 @@
                 "announcement"
               ]
             },
-            "description": "Type of document (e.g., earnings-transcript)"
+            "description": "The type of document to retrieve. Choose from 'earnings-transcript', 'annual-report', 'announcement'."
           },
           {
             "name": "ticker",
             "in": "query",
-            "description": "Comma-separated exchange:ticker values. Example - NSE:ZOMATO, BSE:TCS",
+            "description": "Exchange:Ticker values of companies. Multiple values an be provided separated by commas.",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "NSE:ZOMATO, BSE:TCS"
             },
             "required": false
           },

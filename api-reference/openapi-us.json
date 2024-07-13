@@ -35,7 +35,7 @@
           {
             "name": "cik",
             "in": "query",
-            "description": "Comma-separated CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). Get CIKs from [CIK Mapping](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). Get CIKs from [CIK Mapping](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -45,7 +45,7 @@
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Get valid sectors from [CIK Mapping](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [CIK Mapping](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string"
             },
@@ -54,7 +54,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Check valid industries from [CIK Mapping](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)",
+            "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [CIK Mapping](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)",
             "schema": {
               "type": "string"
             },
@@ -68,7 +68,7 @@
               "type": "string",
               "example": "Q1"
             },
-            "description": "Comma-separated quarter values in the format Q1, Q2, Q3, Q4. Use this parameter to filter by specific quarters."
+            "description": "Fiscal quarter values in the format Q1, Q2, Q3, Q4. Multiple values can be provided separated by commas. Use this parameter to filter by specific quarters."
           },
           {
             "name": "year",
@@ -78,7 +78,7 @@
               "type": "string",
               "example": "2024"
             },
-            "description": "Comma-separated year values in the format YYYY (e.g., 2024, 2023). Use this parameter to filter data by specific years."
+            "description": "Fiscal year values in the format YYYY (e.g., 2024, 2023). Multiple values can be provided separated by commas. Use this parameter to filter data by specific years."
           },
           {
             "name": "page",

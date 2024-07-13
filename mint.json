@@ -59,10 +59,9 @@
     {
       "group": "India Market Data",
       "pages": [
-        "api-reference/india_endpoints/documents-feed",
-        "api-reference/india_endpoints/documents-text-search",
-        "api-reference/india_endpoints/announcement-feed",
-        "api-reference/india_endpoints/announcement-text-search"
+        "api-reference/india_endpoints/filings-feed",
+        "api-reference/india_endpoints/filings-keywords-search",
+        "api-reference/india_endpoints/announcements-enriched-feed"
       ]
     },
     {
