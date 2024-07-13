@@ -66,6 +66,7 @@
             "required": false,
             "schema": {
               "type": "string",
+              "enum": ["Q1", "Q2", "Q3", "Q4"],
               "example": "Q1"
             },
             "description": "Fiscal quarter values in the format Q1, Q2, Q3, Q4. Multiple values can be provided separated by commas. Use this parameter to filter by specific quarters."
@@ -171,7 +172,7 @@
           {
             "name": "cik",
             "in": "query",
-            "description": "Comma-separated CIK values",
+            "description": "CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). Get CIKs from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -181,7 +182,7 @@
           {
             "name": "from_date",
             "in": "query",
-            "description": "Start date in YYYY-MM-DD format.",
+            "description": "Start date in YYYY-MM-DD format. Use this parameter to filter data from a specific start date.",
             "schema": {
               "type": "string"
             },
@@ -190,7 +191,7 @@
           {
             "name": "to_date",
             "in": "query",
-            "description": "End date in YYYY-MM-DD format.",
+            "description": "End date in YYYY-MM-DD format. Use this parameter to filter data till a specific end date",
             "schema": {
               "type": "string"
             },
@@ -210,14 +211,16 @@
             "in": "query",
             "description": "Comma-separated sentiment values (Allowed values - positive, negative, neutral).",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": ["positive", "negative", "neutral"],
+              "example" :"negative"
             },
             "required": false
           },
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Get sector values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string"
             },
@@ -226,7 +229,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Get industry values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string"
             },
@@ -235,7 +238,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Max results per query (max value = 50, default = 20).",
+            "description": "The number of results to return per page. This parameter is optional and defaults to 20 if not specified. Maximum value is 50.",
             "schema": {
               "type": "integer",
               "maximum": 50
@@ -245,7 +248,7 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Required for pagination. Default=1",
+            "description": "Page number for pagination. This parameter is optional and defaults to 1 if not specified.",
             "schema": {
               "type": "integer",
               "minimum": 1
@@ -365,7 +368,7 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination. Specify the page number starting from 1. This parameter is optional and defaults to 1 if not specified.",
+            "description": "Page number for pagination. This parameter is optional and defaults to 1 if not specified.",
             "schema": {
               "type": "integer",
               "example": 1
@@ -374,7 +377,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of results to return per page. Use this parameter to limit the number of results returned per API call. This parameter is optional and defaults to 100 if not specified. Maximum value is 100.",
+            "description": "The number of results to return per page. This parameter is optional and defaults to 20 if not specified. Maximum value is 50.",
             "schema": {
               "type": "integer",
               "example": 100
