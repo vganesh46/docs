@@ -19,7 +19,7 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "https://airtable.com/appOzDM0fPtHdHkdN/shrZ5uJRHuSqvwZdo"
+      "url": "https://www.stockinsights.ai/contact-us"
     }
   ],
   "topbarCtaButton": {
@@ -36,7 +36,7 @@
     {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://www.stockinsights.ai/blog"
+      "url": "https://blog.stockinsights.ai/blog"
     }
   ],
   "navigation": [
