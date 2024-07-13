@@ -35,7 +35,7 @@
           {
             "name": "cik",
             "in": "query",
-            "description": "Comma-separated CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). To find CIK by a company name, visit [SEC EDGAR](https://www.sec.gov/edgar/searchedgar/cik.htm).",
+            "description": "Comma-separated CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). Get [CIKs](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view) from here.",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -45,7 +45,7 @@
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Check the valid values [here](https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0).",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values [here](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string"
             },
@@ -54,7 +54,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Check the valid values [here](https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131)",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values [here](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)",
             "schema": {
               "type": "string"
             },
@@ -163,7 +163,7 @@
     "/api/us/v0/documents/8-K": {
       "get": {
         "summary": "8-K Enriched Feed",
-        "description": "The 8-K Enriched Feed API delivers a real-time stream of SEC 8-K filings, each enriched with AI-generated insights including summaries, category tags (drawn from a predefined set of categories), and sentiment tagging. This API supports various filtering options, enabling users to efficiently retrieve targeted information. It enables users to monitor daily updates on significant corporate events reported by companies, facilitating building notification systems or widgets for tracking key disclosures.",
+        "description": "The 8-K Enriched Feed API delivers a real-time stream of SEC 8-K filings, each enriched with AI-generated insights including summaries, category tags (drawn from a predefined set of categories), and sentiment tags. Users can utilize this enriched feed to monitor daily updates on material events reported by companies, enabling them to build custom email notification systems or display widgets for tracking significant corporate disclosures in their apps.",
         "operationId": "get8KFeed",
         "parameters": [
           {
@@ -215,7 +215,7 @@
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Check the valid values in this [link](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104).",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values in this [link](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string"
             },
@@ -224,7 +224,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Check the valid values in this [link](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104).",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values in this [link](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string"
             },
@@ -442,7 +442,7 @@
     "/api/us/v0/documents/embeddings-search": {
       "post": {
         "summary": "Filings Embeddings Search",
-        "description": "The Filings Embeddings Search API retrieves the nearest chunks of text from our database for specified filings (earnings transcripts and 10-Ks) based on a given query vector. This functionality supports applications like building search engines, text tagging, and more, utilizing the associated text from these financial filings.",
+        "description": "The Filings Embeddings Search API retrieves the nearest chunks of text from our database for specified filings (earnings transcripts and 10-Ks) based on a given query vector. Users can utilize this functionality for various purposes, such as building a search engine, tagging, etc., using the associated text from these filings.",
         "operationId": "documentEmbeddingSearch",
         "requestBody": {
           "required": true,
@@ -492,7 +492,7 @@
                           "type": "string"
                         },
                         "maxItems": 5,
-                        "description": "Sectors (based on Industry Classification) to filter by. Check the valid values in the [link](https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0)"
+                        "description": "Sectors (based on Industry Classification) to filter by. Check the valid values [here](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)"
                       },
                       "industries": {
                         "type": "array",
@@ -500,7 +500,7 @@
                           "type": "string"
                         },
                         "maxItems": 5,
-                        "description": "Industries (based on Industry Classification) to filter by. Check the valid values in the [link](https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131)"
+                        "description": "Industries (based on Industry Classification) to filter by. Check the valid values [here](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)"
                       },
                       "years": {
                         "type": "array",
