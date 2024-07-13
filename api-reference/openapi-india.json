@@ -371,12 +371,12 @@
                 "properties": {
                   "query": {
                     "type": "string",
-                    "description": "The search keyword or phrase",
+                    "description": "The search keyword or phrase.",
                     "example": "revenue increase"
                   },
                   "filters": {
                     "type": "object",
-                    "description": "Search filters",
+                    "description": "Filters to narrow the search scope. For example, the search can be limited to few companies only. Without filters, search will be performed across all the filings.",
                     "$ref": "#/components/schemas/DocumentSearchFilters"
                   }
                 },
