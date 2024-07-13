@@ -35,7 +35,7 @@
           {
             "name": "cik",
             "in": "query",
-            "description": "CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). Get CIKs from [Company Details(https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). Get CIKs from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -45,7 +45,7 @@
           {
             "name": "sector",
             "in": "query",
-            "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [Company Details(https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string"
             },
@@ -54,7 +54,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [Company Details(https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)",
+            "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)",
             "schema": {
               "type": "string"
             },
@@ -215,7 +215,7 @@
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Get sector values from [Company Details(https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Comma-separated sector values based on Industry Classification. Get sector values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string"
             },
@@ -224,7 +224,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Get industry values from [Company Details(https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Comma-separated industry values based on Industry Classification. Get industry values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string"
             },
@@ -334,7 +334,7 @@
             "name": "cik",
             "in": "query",
             "required": true,
-            "description": "The CIK (Central Index Key) of the company. This should be a 10-digit number (include leading zeros if necessary). Get CIK values from [Company Details(https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "The CIK (Central Index Key) of the company. This should be a 10-digit number (include leading zeros if necessary). Get CIK values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -492,7 +492,7 @@
                           "type": "string"
                         },
                         "maxItems": 5,
-                        "description": "Sectors (based on Industry Classification) to filter by. Get sector values from [Company Details(https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)"
+                        "description": "Sectors (based on Industry Classification) to filter by. Get sector values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)"
                       },
                       "industries": {
                         "type": "array",
@@ -500,7 +500,7 @@
                           "type": "string"
                         },
                         "maxItems": 5,
-                        "description": "Industries (based on Industry Classification) to filter by. Get industry values from [Company Details(https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)"
+                        "description": "Industries (based on Industry Classification) to filter by. Get industry values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)"
                       },
                       "years": {
                         "type": "array",

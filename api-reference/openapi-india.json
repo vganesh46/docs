@@ -185,23 +185,24 @@
     },
     "/api/in/v0/documents/announcement": {
       "get": {
-        "summary": "Announcements Feed API",
-        "description": "The API returns the latest announcement feed from Indian stock exchanges, BSE and NSE. Each announcement is enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the announcement content. Returns paginated announcement feed based on provided filters sorted by date descending. If no parameters are sent, the API returns the latest paginated feed.",
+        "summary": "Announcements Enriched Feed",
+        "description": "The Announcements Enriched Feed API delivers a real-time stream of corporate announcements filings (from BSE, NSE), each enriched with AI-generated insights including summaries, category tags (drawn from a predefined set of categories), and sentiment tags. Users can utilize this enriched feed to monitor daily updates on material events reported by companies, enabling them to build custom email notification systems or display widgets for tracking significant corporate disclosures in their apps.",
         "operationId": "getAnnouncementFeed",
         "parameters": [
           {
             "name": "ticker",
             "in": "query",
-            "description": "Comma-separated exchange:ticker values. Example - NSE:ZOMATO, BSE:TCS",
+            "description": "Exchange & Ticker values of companies in the format NSE:ZOMATO. Multiple values an be provided separated by commas.",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "NSE:ZOMATO, BSE:TCS"
             },
             "required": false
           },
           {
             "name": "from_date",
             "in": "query",
-            "description": "Start date in YYYY-MM-DD format.",
+            "description": "Start date in YYYY-MM-DD format. Use this parameter to filter data from a specific start date.",
             "schema": {
               "type": "string"
             },
@@ -210,7 +211,7 @@
           {
             "name": "to_date",
             "in": "query",
-            "description": "End date in YYYY-MM-DD format.",
+            "description": "End date in YYYY-MM-DD format. Use this parameter to filter data till a specific end date",
             "schema": {
               "type": "string"
             },
