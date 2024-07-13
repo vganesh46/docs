@@ -42,7 +42,7 @@
             "description": "Exchange & Ticker values of companies in the format NSE:ZOMATO. Multiple values an be provided separated by commas.",
             "schema": {
               "type": "string",
-              "example": "NSE:ZOMATO, BSE:TCS"
+              "example": "NSE:ZOMATO"
             },
             "required": false
           },
@@ -220,7 +220,7 @@
           {
             "name": "announcement_type_id",
             "in": "query",
-            "description": "Comma-separated Announcement Category IDs (Allowed Values - 1 to 26). Check the Category-ID Map - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "description": "Comma-separated Announcement Category IDs (Allowed Values - 1 to 26). Check the [announcement-category-mapping](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104)",
             "schema": {
               "type": "string"
             },
@@ -257,7 +257,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of items to include per page (max value = 50, default = 20). Use this parameter to limit the number of results returned per API call.",
+            "description": "The number of results to return per page. This parameter is optional and defaults to 20 if not specified. Maximum value is 50.",
             "schema": {
               "type": "integer",
               "maximum": 50
@@ -267,7 +267,7 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination (default is 1). Specify the page number starting from 1.",
+            "description": "Page number for pagination. This parameter is optional and defaults to 1 if not specified.",
             "schema": {
               "type": "integer",
               "minimum": 1
@@ -357,285 +357,10 @@
         "x-internal": false
       }
     },
-    "/api/in/v0/documents/announcement/full-text-search": {
-      "get": {
-        "summary": "Announcements Text Search API",
-        "description": "The API takes a search query and returns the matching announcements based on provided filters sorted by date descending.",
-        "operationId": "searchAnnouncements",
-        "parameters": [
-          {
-            "name": "query",
-            "in": "query",
-            "description": "Seach term",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "ticker",
-            "in": "query",
-            "description": "Comma-separated exchange:ticker values. Example - NSE:ZOMATO, BSE:TCS",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          },
-          {
-            "name": "from_date",
-            "in": "query",
-            "description": "Start date in YYYY-MM-DD format.",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          },
-          {
-            "name": "to_date",
-            "in": "query",
-            "description": "End date in YYYY-MM-DD format.",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          },
-          {
-            "name": "announcement_type_id",
-            "in": "query",
-            "description": "Comma-separated Announcement Category IDs (Allowed Values - 1 to 26). Check the Category-ID Map - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          },
-          {
-            "name": "sentiment",
-            "in": "query",
-            "description": "Comma-separated sentiment values (Allowed values - positive, negative, neutral).",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          },
-          {
-            "name": "sector",
-            "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          },
-          {
-            "name": "industry",
-            "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Max results per query (max value = 50, default = 20).",
-            "schema": {
-              "type": "integer",
-              "maximum": 50
-            },
-            "required": false
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Required for pagination. Default=1",
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success response. Contains Paginated Announcement Search results.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "success"
-                      ]
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Announcement"
-                      }
-                    },
-                    "meta": {
-                      "type": "object",
-                      "items": {
-                        "$ref": "#/components/schemas/Meta"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "x-zuplo-route": {
-          "corsPolicy": "none",
-          "handler": {
-            "export": "urlForwardHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "baseUrl": "https://stockinsights-web.vercel.app"
-            }
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound",
-              "rate-limit-inbound",
-              "set-headers-inbound"
-            ]
-          }
-        },
-        "x-internal": false
-      }
-    },
-    "/api/in/v0/documents/earnings-transcript/{documentId}/ai-insights": {
-      "get": {
-        "summary": "Earnings transcript AI insights ",
-        "description": "The API returns the expanded version of earnings transcript document that contains the AI Generated Insights",
-        "operationId": "getEarningTranscriptInsights",
-        "parameters": [
-          {
-            "name": "documentId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "ID of the earnings transcript document. The Document ID can be found in earnings-transcript Document feed"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "success"
-                      ]
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Announcement"
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/Meta"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "x-zuplo-route": {
-          "corsPolicy": "none",
-          "handler": {
-            "export": "urlForwardHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "baseUrl": "https://stockinsights-web.vercel.app"
-            }
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound",
-              "rate-limit-inbound",
-              "set-headers-inbound"
-            ]
-          }
-        }
-      }
-    },
     "/api/in/v0/documents/full-text-search": {
       "post": {
-        "summary": "Documents Text Search",
-        "description": "Search keywords across all the documents or a subset of documents using filters. Returns upto 100 search results sorted by latest date",
+        "summary": "Filings Keywords Search",
+        "description": "Search keywords across all the filings (Earnings Call Transcripts, Annual Reports, Corporate Announcements) or a subset of the filings using filters. Returns upto 100 search results sorted by latest date",
         "operationId": "searchDocuments",
         "requestBody": {
           "required": true,
@@ -646,7 +371,8 @@
                 "properties": {
                   "query": {
                     "type": "string",
-                    "description": "The search query"
+                    "description": "The search keyword or phrase",
+                    "example": "revenue increase"
                   },
                   "filters": {
                     "type": "object",
@@ -871,42 +597,42 @@
               "annual-report",
               "announcement"
             ],
-            "description": "Type of document (e.g., earnings-transcript)"
+            "description": "The type of document to retrieve. Choose from 'earnings-transcript', 'annual-report', 'announcement'."
           },
           "tickers": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Company Tickers. Format: exchange:ticker values. Example - [NSE:ZOMATO, BSE:TCS]"
+            "description": "Exchange & Ticker values of companies in the format NSE:ZOMATO. Multiple values an be provided separated by commas."
           },
           "sectors": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Sectors (based on Industry Classification) to filter by. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104"
+            "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [Company Details](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104)."
           },
           "industries": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Industries (based on Industry Classification) to filter by. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104"
+            "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [Company Details](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104)."
           },
           "quarters": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Quarters to filter by"
+            "description": "Fiscal quarter values in the format Q1, Q2, Q3, Q4. Multiple values can be provided separated by commas. Use this parameter to filter by specific quarters."
           },
           "years": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Years to filter by"
+            "description": "Fiscal year values in the format YYYY (e.g., 2024, 2023). Multiple values can be provided separated by commas. Use this parameter to filter data by specific years."
           }
         },
         "required": [
