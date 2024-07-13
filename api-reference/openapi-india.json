@@ -39,7 +39,7 @@
           {
             "name": "ticker",
             "in": "query",
-            "description": "Exchange:Ticker values of companies. Multiple values an be provided separated by commas.",
+            "description": "Exchange & Ticker values of companies in the format NSE:ZOMATO. Multiple values an be provided separated by commas.",
             "schema": {
               "type": "string",
               "example": "NSE:ZOMATO, BSE:TCS"
@@ -51,23 +51,25 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Q1"
             },
-            "description": "Comma-separated Quarter values - (e.g., Q1,Q2)"
+            "description": "Fiscal quarter values in the format Q1, Q2, Q3, Q4. Multiple values can be provided separated by commas. Use this parameter to filter by specific quarters."
           },
           {
             "name": "year",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "2024"
             },
-            "description": "Comma-separated Year values - (e.g., 2024,2023)"
+            "description": "Fiscal year values in the format YYYY (e.g., 2024, 2023). Multiple values can be provided separated by commas. Use this parameter to filter data by specific years."
           },
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Check the valid values in this [link](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104)",
+            "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [Company Details](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104).",
             "schema": {
               "type": "string"
             },
@@ -76,7 +78,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Check the valid values in this [link](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104)",
+            "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [Company Details](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104).",
             "schema": {
               "type": "string"
             },
@@ -85,7 +87,7 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination",
+            "description": "Page number for pagination. Specify the page number starting from 1.",
             "schema": {
               "type": "integer",
               "minimum": 1
@@ -95,7 +97,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of items per page",
+            "description": "Page number for pagination. Specify the page number starting from 1.",
             "schema": {
               "type": "integer",
               "maximum": 50
