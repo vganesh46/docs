@@ -83,20 +83,22 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination. Specify the page number starting from 1.",
+            "description": "Page number for pagination. This parameter is optional and defaults to 1 if not specified.",
             "schema": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "example" : 1
             },
             "required": false
           },
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of items to include per page. Use this parameter to limit the number of results returned per API call.",
+            "description": "The number of results to return per page. This parameter is optional and defaults to 20 if not specified. Maximum value is 50.",
             "schema": {
               "type": "integer",
-              "maximum": 50
+              "maximum": 50,
+              "example": 20
             },
             "required": false
           }
@@ -324,7 +326,7 @@
             "name": "type",
             "in": "query",
             "required": true,
-            "description": "The type of document/filing to retrieve embeddings for. Choose from 'earnings-transcript', '10-K'",
+            "description": "The type of document/filing to retrieve embeddings for. Choose from 'earnings-transcript', '10-K'.",
             "schema": {
               "type": "string",
               "enum": ["earnings-transcript", "10-K"]
@@ -344,7 +346,7 @@
             "name": "year",
             "in": "query",
             "required": true,
-            "description": "Year of the document/filing. Format - YYYY",
+            "description": "Fiscal year values in the format YYYY (e.g., 2024, 2023). Multiple values can be provided separated by commas. Use this parameter to filter data by specific years.",
             "schema": {
               "type": "string",
               "example": "2023"
@@ -353,7 +355,7 @@
           {
             "name": "quarter",
             "in": "query",
-            "description": "The fiscal quarter of the document. This parameter is applicable only for the 'earnings-transcript' document type. Valid values are 'Q1', 'Q2', 'Q3', 'Q4'.",
+            "description": "Fiscal quarter values in the format Q1, Q2, Q3, Q4. Multiple values can be provided separated by commas. Use this parameter to filter by specific quarters.",
             "schema": {
               "type": "string",
               "enum": ["Q1", "Q2", "Q3", "Q4"],
@@ -363,7 +365,7 @@
           {
             "name": "page",
             "in": "query",
-            "description": "The page number for pagination. This parameter is optional and defaults to 1 if not specified.",
+            "description": "Page number for pagination. Specify the page number starting from 1. This parameter is optional and defaults to 1 if not specified.",
             "schema": {
               "type": "integer",
               "example": 1
@@ -372,7 +374,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of results to return per page. This parameter is optional and defaults to 100 if not specified. Maximum value is 100.",
+            "description": "Number of results to return per page. Use this parameter to limit the number of results returned per API call. This parameter is optional and defaults to 100 if not specified. Maximum value is 100.",
             "schema": {
               "type": "integer",
               "example": 100

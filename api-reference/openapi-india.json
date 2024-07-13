@@ -97,7 +97,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Page number for pagination. Specify the page number starting from 1.",
+            "description": "Number of items to include per page. Use this parameter to limit the number of results returned per API call.",
             "schema": {
               "type": "integer",
               "maximum": 50
@@ -231,14 +231,15 @@
             "in": "query",
             "description": "Comma-separated sentiment values (Allowed values - positive, negative, neutral).",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "negative"
             },
             "required": false
           },
           {
             "name": "sector",
             "in": "query",
-            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [Company Details](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104).",
             "schema": {
               "type": "string"
             },
@@ -247,7 +248,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
+            "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [Company Details](https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104).",
             "schema": {
               "type": "string"
             },
@@ -256,7 +257,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Max results per query (max value = 50, default = 20).",
+            "description": "Number of items to include per page (max value = 50, default = 20). Use this parameter to limit the number of results returned per API call.",
             "schema": {
               "type": "integer",
               "maximum": 50
@@ -266,7 +267,7 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Required for pagination. Default=1",
+            "description": "Page number for pagination (default is 1). Specify the page number starting from 1.",
             "schema": {
               "type": "integer",
               "minimum": 1
