@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://stockinsights-ai-us-main-e36fe38.d2.zuplo.dev"
+      "url": "https://www.stockinsights.ai"
     }
   ],
   "security": [
@@ -18,8 +18,8 @@
   "paths": {
     "/api/us/v0/documents": {
       "get": {
-        "summary": "Filings Feed",
-        "description": "The Filings Feed API retrieves real-time updates on earnings call transcripts and SEC filings (e.g., 10-K, 10-Q, 8-K) based on the specified document type. Users can optionally filter results by sector, timeframe, or other parameters to facilitate targeted information retrieval.",
+        "summary": "Document Feed API",
+        "description": "The API returns the latest document/filings feed for a given document type.",
         "operationId": "getDocumentFeed",
         "parameters": [
           {
@@ -28,14 +28,18 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["earnings-transcript", "10-K", "8-K"]
+              "enum": [
+                "earnings-transcript",
+                "10-K",
+                "8-K"
+              ]
             },
-            "description": "The type of document to retrieve. Choose from 'earnings-transcript', '10-K', '8-K'."
+            "description": "Type of document (e.g., earnings-transcript)"
           },
           {
             "name": "cik",
             "in": "query",
-            "description": "CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). Get CIKs from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Comma-separated CIKs",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -45,7 +49,7 @@
           {
             "name": "sector",
             "in": "query",
-            "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0",
             "schema": {
               "type": "string"
             },
@@ -54,7 +58,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131",
             "schema": {
               "type": "string"
             },
@@ -65,41 +69,36 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "enum": ["Q1", "Q2", "Q3", "Q4"],
-              "example": "Q1"
+              "type": "string"
             },
-            "description": "Fiscal quarter values in the format Q1, Q2, Q3, Q4. Multiple values can be provided separated by commas. Use this parameter to filter by specific quarters."
+            "description": "Comma-separated Quarter values. Eg: Q1,Q2,Q3,Q4"
           },
           {
             "name": "year",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "example": "2024"
+              "type": "string"
             },
-            "description": "Fiscal year values in the format YYYY (e.g., 2024, 2023). Multiple values can be provided separated by commas. Use this parameter to filter data by specific years."
+            "description": "Comma-separated Year values. Format YYYY - (e.g., 2024,2023)"
           },
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination. This parameter is optional and defaults to 1 if not specified.",
+            "description": "Page number for pagination",
             "schema": {
               "type": "integer",
-              "minimum": 1,
-              "example" : 1
+              "minimum": 1
             },
             "required": false
           },
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of results to return per page. This parameter is optional and defaults to 20 if not specified. Maximum value is 50.",
+            "description": "Number of items per page",
             "schema": {
               "type": "integer",
-              "maximum": 50,
-              "example": 20
+              "maximum": 50
             },
             "required": false
           }
@@ -114,7 +113,9 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "enum": ["success"]
+                      "enum": [
+                        "success"
+                      ]
                     },
                     "data": {
                       "type": "array",
@@ -160,19 +161,36 @@
               }
             }
           }
+        },
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://www.stockinsights.ai"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "default-api-key-inbound",
+              "user-rate-limit-inbound-100-per-min",
+              "set-headers-inbound"
+            ]
+          }
         }
       }
     },
     "/api/us/v0/documents/8-K": {
       "get": {
-        "summary": "8-K Enriched Feed",
-        "description": "The 8-K Enriched Feed API delivers a real-time stream of SEC 8-K filings, each enriched with AI-generated insights including summaries, category tags (drawn from a predefined set of categories), and sentiment tags. Users can utilize this enriched feed to monitor daily updates on material events reported by companies, enabling them to build custom email notification systems or display widgets for tracking significant corporate disclosures in their apps.",
+        "summary": "8-K Feed API with AI tags",
+        "description": "The API returns the latest 8-K feed from SEC Edgar. Each 8-K is then enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the 8-K content. Returns paginated 8-K feed based on provided filters sorted by date descending. If no parameters are sent, the API returns the latest paginated feed.",
         "operationId": "get8KFeed",
         "parameters": [
           {
             "name": "cik",
             "in": "query",
-            "description": "CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). Get CIKs from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Comma-separated CIK values",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -182,7 +200,7 @@
           {
             "name": "from_date",
             "in": "query",
-            "description": "Start date in YYYY-MM-DD format. Use this parameter to filter data from a specific start date.",
+            "description": "Start date in YYYY-MM-DD format.",
             "schema": {
               "type": "string"
             },
@@ -191,7 +209,7 @@
           {
             "name": "to_date",
             "in": "query",
-            "description": "End date in YYYY-MM-DD format. Use this parameter to filter data till a specific end date",
+            "description": "End date in YYYY-MM-DD format.",
             "schema": {
               "type": "string"
             },
@@ -200,7 +218,7 @@
           {
             "name": "filing_8k_type_id",
             "in": "query",
-            "description": "Comma-separated 8K Category IDs (Allowed Values - 1 to 26). Check the [filings-8k-type mapping](https://drive.google.com/file/d/11WdsQBvXrHGUuMwEzu_m4jktl0BzYGkk/view).",
+            "description": "Comma-separated 8K Category IDs (Allowed Values - 1 to 26). Check the Category-ID Map - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=456483579#gid=456483579",
             "schema": {
               "type": "string"
             },
@@ -211,16 +229,14 @@
             "in": "query",
             "description": "Comma-separated sentiment values (Allowed values - positive, negative, neutral).",
             "schema": {
-              "type": "string",
-              "enum": ["positive", "negative", "neutral"],
-              "example" :"negative"
+              "type": "string"
             },
             "required": false
           },
           {
             "name": "sector",
             "in": "query",
-            "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Comma-separated sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
             "schema": {
               "type": "string"
             },
@@ -229,7 +245,7 @@
           {
             "name": "industry",
             "in": "query",
-            "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "Comma-separated industry values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17-Zq8E6G7hAq4-3QdjLj_b1EGghFcM9OB7Om5AXSLRI/edit#gid=853687104",
             "schema": {
               "type": "string"
             },
@@ -238,7 +254,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of results to return per page. This parameter is optional and defaults to 20 if not specified. Maximum value is 50.",
+            "description": "Max results per query (max value = 50, default = 20).",
             "schema": {
               "type": "integer",
               "maximum": 50
@@ -248,7 +264,7 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination. This parameter is optional and defaults to 1 if not specified.",
+            "description": "Required for pagination. Default=1",
             "schema": {
               "type": "integer",
               "minimum": 1
@@ -266,7 +282,9 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "enum": ["success"]
+                      "enum": [
+                        "success"
+                      ]
                     },
                     "data": {
                       "type": "array",
@@ -316,30 +334,50 @@
             }
           }
         },
-        "x-internal": false
+        "x-internal": false,
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://www.stockinsights.ai"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "default-api-key-inbound",
+              "user-rate-limit-inbound-100-per-min",
+              "set-headers-inbound"
+            ]
+          }
+        }
       }
     },
     "/api/us/v0/documents/embeddings": {
       "get": {
-        "summary": "Filings Embeddings",
-        "description": "The Filings Embeddings API retrieves OpenAI embeddings for filings (earnings transcripts and 10-Ks) based on the specified document type and the CIK. Users can optionally filter results by year/quarter. These embeddings, created using [text-embedding-3-small](https://platform.openai.com/docs/guides/embeddings/embedding-models) with a specific chunk length, are updated in our vector database as new filings are published. Users can utilize these embeddings to summarize documents, extract specific metrics, or perform advanced analyses.",
+        "summary": "Fetch document embeddings",
+        "description": "Fetch all the document embeddings of a filing/document based on the query parameters",
         "operationId": "getDocumentEmbeddings",
         "parameters": [
           {
             "name": "type",
             "in": "query",
             "required": true,
-            "description": "The type of document/filing to retrieve embeddings for. Choose from 'earnings-transcript', '10-K'.",
+            "description": "Type of the document/filing",
             "schema": {
               "type": "string",
-              "enum": ["earnings-transcript", "10-K"]
+              "enum": [
+                "earnings-transcript",
+                "10-K"
+              ]
             }
           },
           {
             "name": "cik",
             "in": "query",
             "required": true,
-            "description": "The CIK (Central Index Key) of the company. This should be a 10-digit number (include leading zeros if necessary). Get CIK values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
+            "description": "CIK of the company",
             "schema": {
               "type": "string",
               "example": "0001045810"
@@ -349,7 +387,7 @@
             "name": "year",
             "in": "query",
             "required": true,
-            "description": "Fiscal year values in the format YYYY (e.g., 2024, 2023). Multiple values can be provided separated by commas. Use this parameter to filter data by specific years.",
+            "description": "Year of the document/filing. Format - YYYY",
             "schema": {
               "type": "string",
               "example": "2023"
@@ -358,17 +396,22 @@
           {
             "name": "quarter",
             "in": "query",
-            "description": "Fiscal quarter values in the format Q1, Q2, Q3, Q4. Multiple values can be provided separated by commas. Use this parameter to filter by specific quarters.",
+            "description": "Fiscal quarter of the document. Applicable for earnings-transcript document type",
             "schema": {
               "type": "string",
-              "enum": ["Q1", "Q2", "Q3", "Q4"],
+              "enum": [
+                "Q1",
+                "Q2",
+                "Q3",
+                "Q4"
+              ],
               "example": "Q4"
             }
           },
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination. This parameter is optional and defaults to 1 if not specified.",
+            "description": "Page number for pagination. Optional, default=1",
             "schema": {
               "type": "integer",
               "example": 1
@@ -377,7 +420,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of results to return per page. This parameter is optional and defaults to 20 if not specified. Maximum value is 50.",
+            "description": "Number of results per page. Optional, default=100",
             "schema": {
               "type": "integer",
               "example": 100
@@ -386,7 +429,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response. Contains text embeddings in a list broken by multiple chunks",
+            "description": "Successful response. Contains the list of chunks for given query vector",
             "content": {
               "application/json": {
                 "schema": {
@@ -441,13 +484,30 @@
             }
           }
         },
-        "x-internal": false
+        "x-internal": false,
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://www.stockinsights.ai"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "default-api-key-inbound",
+              "user-rate-limit-inbound-100-per-min",
+              "set-headers-inbound"
+            ]
+          }
+        }
       }
     },
     "/api/us/v0/documents/embeddings-search": {
       "post": {
-        "summary": "Filings Embeddings Search",
-        "description": "The Filings Embeddings Search API retrieves the nearest chunks of text (based on semantic similarity) from our database for specified filings (earnings transcripts and 10-Ks) for any given user query/prompt in natural langauge. Users can utilize this functionality for various purposes, such as building an AI-search engine, AI-tagging, etc., using the associated text from these filings.",
+        "summary": "Get filing chunks for the given query ",
+        "description": "For a given query, returns the similar semantic chunks of filings from earnings transcripts and 10-Ks matching the query",
         "operationId": "documentEmbeddingSearch",
         "requestBody": {
           "required": true,
@@ -455,29 +515,34 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["query"],
+                "required": [
+                  "query_vector"
+                ],
                 "properties": {
                   "query": {
                     "type": "string",
-                    "description": "The user query in natural language for which similar chunks of filings text is retrieved using OpenAI embeddings."
+                    "description": "The query for which similar chunks has to be returned"
                   },
                   "top_k": {
                     "type": "integer",
                     "default": 10,
                     "maximum": 100,
-                    "description": "Number of top matching chunks to return in the response. This parameter is optional and defaults to 20 if not specified. Maximum value is 50"
+                    "description": "Number of top matching docs in the response. Optional. Default=10, Max=100"
                   },
                   "filters": {
                     "type": "object",
-                    "description": "Filters to narrow the search scope. For example, the search can be limited to few CIKs only. Without filters, search will be performed across all the filings",
+                    "description": "Filters can be used to narrow the search scope. For example, the search can be limited to few CIKs only. Without filters, search will be performed across all the filings",
                     "properties": {
                       "types": {
                         "type": "array",
                         "items": {
                           "type": "string",
-                          "enum": ["earnings-transcript", "10-K"]
+                          "enum": [
+                            "earnings-transcript",
+                            "10-K"
+                          ]
                         },
-                        "description": "The type of filings to include in the search. Choose from 'earnings-transcript', '10-K'."
+                        "description": "Type of filings/documents."
                       },
                       "ciks": {
                         "type": "array",
@@ -486,7 +551,7 @@
                           "example": "0001045810"
                         },
                         "maxItems": 100,
-                        "description": "CIKs (Central Index Keys) of companies. Multiple CIKs can be provided separated by commas. Each CIK should be a 10-digit number (include leading zeros if necessary). Get CIKs from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)."
+                        "description": "CIKs of the companies. Max 100 ciks"
                       },
                       "sectors": {
                         "type": "array",
@@ -494,7 +559,7 @@
                           "type": "string"
                         },
                         "maxItems": 5,
-                        "description": "Sector classification of the companies. Multiple values can be provided separated by commas. Get valid sector values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)."
+                        "description": "Sector values based on Industry Classification. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=0#gid=0"
                       },
                       "industries": {
                         "type": "array",
@@ -502,7 +567,7 @@
                           "type": "string"
                         },
                         "maxItems": 5,
-                        "description": "Industry classification of the companies. Multiple values can be provided separated by commas. Check valid industry values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view)"
+                        "description": "Industries (based on Industry Classification) to filter by. Check the valid values - https://docs.google.com/spreadsheets/d/17Gwb93kbebsW6880Nln8eHosc9G0Dnux3uGtOzcSZvE/edit?gid=998183131#gid=998183131"
                       },
                       "years": {
                         "type": "array",
@@ -510,16 +575,20 @@
                           "type": "string",
                           "pattern": "^[0-9]{4}$"
                         },
-                        "description": "Fiscal year values in the format YYYY (e.g., 2024, 2023). Multiple values can be provided separated by commas. Use this parameter to filter data by specific years."
+                        "description": "Year of the filing. Format - YYYY"
                       },
                       "quarters": {
                         "type": "array",
                         "items": {
                           "type": "string",
-                          "enum": ["Q1", "Q2", "Q3", "Q4"],
-                          "example": "Q4"
+                          "enum": [
+                            "Q1",
+                            "Q2",
+                            "Q3",
+                            "Q4"
+                          ]
                         },
-                        "description": "Fiscal quarter values in the format Q1, Q2, Q3, Q4. Multiple values can be provided separated by commas. Use this parameter to filter by specific quarters."
+                        "description": "Quarter of the filing. Only for earnings-transcript"
                       }
                     }
                   }
@@ -563,7 +632,7 @@
                             "published_date": "2021-05-27T01:40:47.000Z",
                             "year": "2022",
                             "quarter": "Q1",
-                            "link": "https://stockinsights.ai/us/filings/earnings-transcript/64428b8954ef6b435cdc137c/content"
+                            "link": "https://www.stockinsights.ai/us/filings/earnings-transcript/64428b8954ef6b435cdc137c/content"
                           },
                           "company": {
                             "company_name": "Nvidia Corp",
@@ -582,7 +651,7 @@
                             "published_date": "2024-02-22T10:58:00.000Z",
                             "year": "2024",
                             "quarter": "Q4",
-                            "link": "https://stockinsights.ai/us/filings/earnings-transcript/65d811ca8ac10234b0fbd253/content"
+                            "link": "https://www.stockinsights.ai/us/filings/earnings-transcript/65d811ca8ac10234b0fbd253/content"
                           },
                           "company": {
                             "id": "epPs1xy7IL",
@@ -630,7 +699,24 @@
             }
           }
         },
-        "x-internal": false
+        "x-internal": false,
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://www.stockinsights.ai"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "default-api-key-inbound",
+              "user-rate-limit-inbound-100-per-min",
+              "set-headers-inbound"
+            ]
+          }
+        }
       }
     }
   },
@@ -646,7 +732,11 @@
           },
           "type": {
             "type": "string",
-            "enum": ["earnings-transcript", "10-K", "8-K"],
+            "enum": [
+              "earnings-transcript",
+              "10-K",
+              "8-K"
+            ],
             "description": "Represents the type of document"
           },
           "pdf_link": {
@@ -681,22 +771,26 @@
           },
           "ticker": {
             "type": "string",
-            "description": "Company Ticker"
+            "description": "Internal ticker of the company"
           },
           "year": {
             "type": "string",
-            "description": "Year associated with the document. Format YYYY"
+            "description": "Document associated year. Format YYYY"
           },
           "month": {
             "type": "string",
-            "description": "Month associated with the document"
+            "description": "Document's associated month"
           },
           "quarter": {
             "type": "string",
-            "enum": ["Q1", "Q2", "Q3", "Q4"],
-            "description": "Quarter associated with the document"
+            "enum": [
+              "Q1",
+              "Q2",
+              "Q3",
+              "Q4"
+            ],
+            "description": "Document associated Quarter"
           },
-
           "published_date": {
             "type": "string",
             "description": "UTC Timestamp of the document published date-time",
@@ -755,7 +849,11 @@
               "sentiment": {
                 "type": "string",
                 "description": "Sentiment of the 8-K.",
-                "enum": ["positive", "negative", "neutral"]
+                "enum": [
+                  "positive",
+                  "negative",
+                  "neutral"
+                ]
               }
             }
           },
@@ -800,7 +898,12 @@
               },
               "quarter": {
                 "type": "string",
-                "enum": ["Q1", "Q2", "Q3", "Q4"],
+                "enum": [
+                  "Q1",
+                  "Q2",
+                  "Q3",
+                  "Q4"
+                ],
                 "description": "Quarter of the filing"
               },
               "link": {
