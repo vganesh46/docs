@@ -69,7 +69,6 @@
       "group": "US Market Data",
       "pages": [
         "api-reference/us_endpoints/filings-feed",
-        "api-reference/us_endpoints/filings-embeddings",
         "api-reference/us_endpoints/filings-embeddings-search",
         "api-reference/us_endpoints/8k-tagged-feed"
       ]
