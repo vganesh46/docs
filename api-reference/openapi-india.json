@@ -354,7 +354,7 @@
     },
     "/api/in/v0/documents/full-text-search": {
       "post": {
-        "summary": "Filings Text Search",
+        "summary": "Filings Keyword Search",
         "description": "Search keywords across all the documents or a subset of filings using filters. Returns upto 100 search results sorted by latest date",
         "operationId": "searchDocuments",
         "requestBody": {
