@@ -165,8 +165,8 @@
     },
     "/api/us/v0/documents/8-K": {
       "get": {
-        "summary": "8-K Enriched Feed",
-        "description": "The 8-K Enriched Feed API delivers a real-time stream of SEC 8-K filings, each enriched with AI-generated insights including summaries, category tags (drawn from a predefined set of categories), and sentiment tags. Users can utilize this enriched feed to monitor daily updates on material events reported by companies, enabling them to build custom email notification systems or display widgets for tracking significant corporate disclosures in their apps.",
+        "summary": "8-K Tagged Feed",
+        "description": "The 8-K Tagged Feed API delivers a real-time stream of SEC 8-K filings, each tagged with AI-generated insights including summaries, category tags (drawn from a predefined set of categories), and sentiment tags. Users can utilize this tagged feed to monitor daily updates on material events reported by companies, enabling them to build custom email notification systems or display widgets for tracking significant corporate disclosures in their apps.",
         "operationId": "get8KFeed",
         "parameters": [
           {
@@ -279,131 +279,6 @@
                       "items": {
                         "$ref": "#/components/schemas/Meta"
                       }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "x-internal": false
-      }
-    },
-    "/api/us/v0/documents/embeddings": {
-      "get": {
-        "summary": "Filings Embeddings",
-        "description": "The Filings Embeddings API retrieves OpenAI embeddings for filings (earnings transcripts and 10-Ks) based on the specified document type and the CIK. Users can optionally filter results by year/quarter. These embeddings, created using [text-embedding-3-small](https://platform.openai.com/docs/guides/embeddings/embedding-models) with a specific chunk length, are updated in our vector database as new filings are published. Users can utilize these embeddings to summarize documents, extract specific metrics, or perform advanced analyses.",
-        "operationId": "getDocumentEmbeddings",
-        "parameters": [
-          {
-            "name": "type",
-            "in": "query",
-            "required": true,
-            "description": "The type of document/filing to retrieve embeddings for. Choose from 'earnings-transcript', '10-K'.",
-            "schema": {
-              "type": "string",
-              "enum": ["earnings-transcript", "10-K"]
-            }
-          },
-          {
-            "name": "cik",
-            "in": "query",
-            "required": true,
-            "description": "The CIK (Central Index Key) of the company. This should be a 10-digit number (include leading zeros if necessary). Get CIK values from [Company Details](https://drive.google.com/file/d/1XQh20CTDEn_uFhRArOQm9jkVesnSkSTI/view).",
-            "schema": {
-              "type": "string",
-              "example": "0001045810"
-            }
-          },
-          {
-            "name": "year",
-            "in": "query",
-            "required": true,
-            "description": "Fiscal year values in the format YYYY (e.g., 2024, 2023). Multiple values can be provided separated by commas. Use this parameter to filter data by specific years.",
-            "schema": {
-              "type": "string",
-              "example": "2023"
-            }
-          },
-          {
-            "name": "quarter",
-            "in": "query",
-            "description": "Fiscal quarter values in the format Q1, Q2, Q3, Q4. Multiple values can be provided separated by commas. Use this parameter to filter by specific quarters.",
-            "schema": {
-              "type": "string",
-              "enum": ["Q1", "Q2", "Q3", "Q4"],
-              "example": "Q4"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number for pagination. This parameter is optional and defaults to 1 if not specified.",
-            "schema": {
-              "type": "integer",
-              "example": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The number of results to return per page. This parameter is optional and defaults to 20 if not specified. Maximum value is 50.",
-            "schema": {
-              "type": "integer",
-              "example": 100
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response. Contains text embeddings in a list broken by multiple chunks",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "description": "Status code"
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/DocumentChunkWithEmbedding"
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/Meta"
                     }
                   }
                 }
@@ -706,7 +581,7 @@
       },
       "8-K": {
         "type": "object",
-        "description": "Each 8-K document is enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the 8-K content.",
+        "description": "Each 8-K document is tagged with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the 8-K content.",
         "properties": {
           "id": {
             "type": "string",

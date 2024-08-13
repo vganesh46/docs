@@ -182,8 +182,8 @@
     },
     "/api/in/v0/documents/announcement": {
       "get": {
-        "summary": "Announcements Enriched Feed",
-        "description": "The Announcements Enriched Feed API delivers a real-time stream of Corporate filings disclosed to BSE/NSE exchanges, each enriched with AI-generated insights including summaries, category tags (drawn from a predefined set of categories), and sentiment tags. Users can utilize this enriched feed to monitor daily updates on material events reported by companies, enabling them to build custom email notification systems or display widgets for tracking significant corporate disclosures in their apps.",
+        "summary": "Announcements Tagged Feed",
+        "description": "The Announcements Tagged Feed API delivers a real-time stream of Corporate filings disclosed to BSE/NSE exchanges, each tagged with AI-generated insights including summaries, category tags (drawn from a predefined set of categories), and sentiment tags. Users can utilize this tagged feed to monitor daily updates on material events reported by companies, enabling them to build custom email notification systems or display widgets for tracking significant corporate disclosures in their apps.",
         "operationId": "getAnnouncementFeed",
         "parameters": [
           {
