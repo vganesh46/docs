@@ -355,7 +355,7 @@
     "/api/in/v0/documents/full-text-search": {
       "post": {
         "summary": "Filings Keyword Search",
-        "description": "Search keywords across all the documents or a subset of filings using filters. Returns upto 100 search results sorted by latest date",
+        "description": "The Filings Keyword Search API fetches search results from our database for specified filings (earnings transcripts and annual reports) for any given keyword/phrase. Returns upto 100 search results sorted by latest date",
         "operationId": "searchDocuments",
         "requestBody": {
           "required": true,
@@ -366,11 +366,11 @@
                 "properties": {
                   "query": {
                     "type": "string",
-                    "description": "The search query"
+                    "description": "Keyword/Phrase to Search"
                   },
                   "filters": {
                     "type": "object",
-                    "description": "Search filters",
+                    "description": "Filters to narrow the search scope. For example, the search can be limited to few companies only. Without filters, search will be performed across all the filings.                    ",
                     "$ref": "#/components/schemas/DocumentSearchFilters"
                   }
                 },
@@ -483,7 +483,7 @@
                   },
                   "filters": {
                     "type": "object",
-                    "description": "Filters to narrow the search scope. For example, the search can be limited to few CIKs only. Without filters, search will be performed across all the filings.",
+                    "description": "Filters to narrow the search scope. For example, the search can be limited to few companies only. Without filters, search will be performed across all the filings.",
                     "properties": {
                       "types": {
                         "type": "array",
@@ -994,7 +994,7 @@
       },
       "Announcement": {
         "type": "object",
-        "description": "Each announcement is enriched with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the announcement content.",
+        "description": "Each announcement is tagged with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the announcement content.",
         "properties": {
           "id": {
             "type": "string",
