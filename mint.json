@@ -61,6 +61,7 @@
       "pages": [
         "api-reference/india_endpoints/filings-feed",
         "api-reference/india_endpoints/filings-keywords-search",
+        "api-reference/india_endpoints/filings-embeddings-search",
         "api-reference/india_endpoints/announcements-enriched-feed"
       ]
     },
