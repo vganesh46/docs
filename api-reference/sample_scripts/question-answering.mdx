@@ -1,0 +1,122 @@
+---
+title: 'Question Answering'
+description: 'How to use Embeddings API for Natural Language Question Answering via any LLM'
+---
+
+To use the Embeddings API, please go through the detailed information about the API and its parameters from the [Documentation](https://docs.stockinsights.ai/api-reference/india_endpoints/filings-embeddings-search).
+
+<Note>
+  If you don't have an API key, please send your request - [API Access Request Form](https://airtable.com/appwmCiMxABL5dAtH/shrJoJJnvXDkbaXHf).
+</Note>
+
+## Example
+
+Below is a Python example demonstrating how to perform a question-answering:
+
+### Function to get similar filings chunks
+
+```python
+
+import requests
+import json
+
+def retrieve_similar_filings_chunks(query):
+    url = 'https://stockinsights-ai-main-49970eb.d2.zuplo.dev/api/in/v0/documents/embeddings-search'
+    headers = {'Content-Type': 'application/json',
+              'Authorization': 'Bearer YOUR_API_KEY_HERE'}
+    data = {
+        "query": query,
+        "filters": {
+            "types": ["earnings-transcript", "annual-report"],
+            'year': '2024'
+        }
+    }
+
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    return response.json()
+    
+result = retrieve_similar_filings_chunks("FIIs contribution to Indian Capital Markets")
+```
+
+### Function to Generate Answers Using OpenAI GPT Model
+
+```python
+
+from openai import OpenAI
+
+# Set your OpenAI API key
+client = OpenAI(
+  api_key='YOUR_OPEN_AI_KEY_HERE',
+)
+
+GPT_MODEL = 'gpt-4o-mini'
+
+# To interact with OpenAI GPT model
+def chat_completion_request(messages, model= GPT_MODEL, stream=False, functions=None, function_call=None):
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+            stream = stream,
+            functions=functions,
+            function_call=function_call
+        )
+        return response
+    except Exception as e:
+        print("Unable to generate ChatCompletion response")
+        print(f"Exception: {e}")
+        return e
+
+# Function to construct knowledge source
+def construct_knowledge_source(similar_chunks):
+    knowledge_source = ""
+    data = similar_chunks.get('data', [])
+    
+    for entry in data:
+        chunk_content = entry.get('text', '')
+        company_name = entry.get('company', {}).get('company_name', '')
+        document_type = entry.get('document', {}).get('type', '')
+        document_link = entry.get('document', {}).get('link', '')
+        page_num = entry.get('metadata', {}).get('page_num', '')
+        document_link_with_page = f"{document_link}#page={page_num}"
+        year = entry.get('document', {}).get('year', '')
+        quarter = entry.get('document', {}).get('quarter', '')
+        
+        # Append the context to each chunk
+        knowledge_source += f"This is a section from {document_type} of company {company_name} for FY{year} {quarter if quarter else ''} from {document_link_with_page}: {chunk_content};\n\n"
+    
+    return knowledge_source
+
+def get_answer_from_public_company_filings(query):
+    similar_filings_chunks = retrieve_similar_filings_chunks(query)
+    knowledge_source = construct_knowledge_source(similar_filings_chunks)
+    response_instructions = """
+         Answer user questions based on some parts of the filings/disclosures identified as most relevant to the question.
+         Provide a clear and comprehensive response to the question only from the provided context. """
+
+    setup_messages=[
+                {'role': 'system', 
+                 'content': response_instructions
+                },
+                {
+                'role': 'system',
+                'content': knowledge_source
+                },
+                {'role': 'user',
+                'content': query
+                }
+            ]
+    chat_response = chat_completion_request(messages = setup_messages,stream = False)
+    message = chat_response.choices[0].message.content
+    return message
+
+query = 'What could be the reasons for decreased overseas(FII) contribution in Indian Capital Markets decreasing while the Domestic fund flows contributions are increasing'
+get_answer_from_public_company_filings(query)
+```
+
+## Key Points
+
+- Replace YOUR_API_KEY_HERE with your actual API key in the Authorization header.
+- Replace YOUR_OPEN_AI_KEY_HERE with your actual OpenAI API key.
+- Modify the query parameter to suit your specific question.
+- Adjust the filters to target specific document types or time periods as needed.

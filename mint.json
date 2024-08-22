@@ -76,7 +76,8 @@
     {
       "group": "Sample Scripts",
       "pages": [
-        "api-reference/sample_scripts/contextual-search"
+        "api-reference/sample_scripts/contextual-search",
+        "api-reference/sample_scripts/question-answering"
       ]
     }
   ],
