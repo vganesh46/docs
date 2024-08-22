@@ -459,7 +459,7 @@
     "/api/in/v0/documents/embeddings-search": {
       "post": {
         "summary": "Filings Embeddings Search",
-        "description": "The Filings Embeddings Search API retrieves the nearest chunks of text (based on semantic similarity) from our database for specified filings (earnings transcripts and 10-Ks) for any given user query/prompt in natural langauge. Users can utilize this functionality for various purposes, such as building an AI-search engine, AI-tagging, etc., using the associated text from these filings.",
+        "description": "The Filings Embeddings Search API retrieves the nearest chunks of text (based on semantic similarity) from our database for specified filings (earnings transcripts and annual reports) for any given user query/prompt in natural langauge. Users can utilize this functionality for various purposes, such as building an AI-search engine, AI-tagging, etc., using the associated text from these filings.",
         "operationId": "documentEmbeddingSearch",
         "requestBody": {
           "required": true,

@@ -1,0 +1,43 @@
+---
+title: 'Contextual Search'
+description: 'How to use Embeddings API for performing Contextual Search.'
+---
+
+To use the Embeddings API for contextual search, please go through the detailed information about the API and its parameters from the [Documentation](https://docs.stockinsights.ai/api-reference/india_endpoints/filings-keywords-search).
+
+<Note>
+  If you don't have an API key, please send your request - [API Access Request Form](https://airtable.com/appwmCiMxABL5dAtH/shrJoJJnvXDkbaXHf).
+</Note>
+
+## Example
+
+Below is a Python example demonstrating how to make a request to the API to perform a contextual search:
+
+```embeddings_search.py
+
+import requests
+import json
+
+def retrieve_similar_filings_chunks(query):
+    url = 'https://stockinsights-ai-main-49970eb.d2.zuplo.dev/api/in/v0/documents/embeddings-search'
+    headers = {'Content-Type': 'application/json',
+              'Authorization': 'Bearer YOUR_API_KEY_HERE'}
+    data = {
+        "query": query,
+        "filters": {
+            "types": ["earnings-transcript", "annual-report"],
+            'year': '2024'
+        }
+    }
+
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    return response.json()
+    
+result = retrieve_similar_filings_chunks("FIIs contribution to Indian Capital Markets")
+```
+
+## Key Points
+
+- Replace YOUR_API_KEY_HERE with your actual API key in the Authorization header.
+- Modify the query parameter to suit your search needs.
+- Adjust the filters to target specific document types or time periods.
