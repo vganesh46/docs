@@ -50,7 +50,7 @@
     },
     {
       "group": "Solutions",
-      "pages": ["solutions/screener","solutions/custom-alerts"]
+      "pages": ["solutions/ai_agent","solutions/screener","solutions/custom-alerts"]
     },
     {
       "group": "API Documentation",
