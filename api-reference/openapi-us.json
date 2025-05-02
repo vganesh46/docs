@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://stockinsights-ai-us-main-e36fe38.d2.zuplo.dev"
+      "url": "https://stockinsights-ai-us-main-f5fd25a.zuplo.app"
     }
   ],
   "security": [
@@ -28,7 +28,14 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["earnings-transcript", "10-K", "8-K"]
+              "enum": [ 
+                "10-K", 
+                "20-F",
+                "10-Q",
+                "earnings-transcript",
+                "8-K",
+                "6-K",
+                "proxy"]
             },
             "description": "The type of document to retrieve. Choose from 'earnings-transcript', '10-K', '8-K'."
           },

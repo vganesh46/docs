@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://stockinsights-ai-main-49970eb.d2.zuplo.dev/"
+      "url": "https://stockinsights-ai-main-95a26a0.zuplo.app"
     }
   ],
   "security": [
@@ -29,8 +29,10 @@
             "schema": {
               "type": "string",
               "enum": [
-                "earnings-transcript",
                 "annual-report",
+                "quarterly-result",
+                "earnings-transcript",
+                "investor-presentation",
                 "announcement"
               ]
             },
