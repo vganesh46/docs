@@ -4,7 +4,7 @@
   "favicon": "/favicon.svg",
   "logo": {
     "dark": "/logo/dark.png",
-    "light": "/logo/light.png"
+    "light": "/logo/light.svg"
   },
 
   "colors": {
