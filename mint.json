@@ -62,7 +62,8 @@
         "api-reference/india_endpoints/filings-feed",
         "api-reference/india_endpoints/filings-keywords-search",
         "api-reference/india_endpoints/filings-embeddings-search",
-        "api-reference/india_endpoints/announcements-tagged-feed"
+        "api-reference/india_endpoints/announcements-tagged-feed",
+        "api-reference/india_endpoints/results-calendar"
       ]
     },
     {

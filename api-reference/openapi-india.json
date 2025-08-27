@@ -623,8 +623,100 @@
           }
         }
       }
-    }
-  },
+    },
+  "/api/in/v0/results-calendar": {
+      "get": {
+        "summary": "Results Calendar API",
+        "description": "API returning the paginated latest results calendar",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Optional. Comma-separated ticker values: Example - SWIGGY, TCS. In case of ticker conflicts, use - exchange:ticker values. Example - NSE:ZOMATO, BSE:TCS, BSE:500002",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success"
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CompanyCalendarResult"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Meta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://www.stockinsights.ai"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "api-key-inbound",
+              "rate-limit-inbound",
+              "set-headers-inbound"
+            ]
+          }
+        }
+      }
+    },
   "components": {
     "schemas": {
       "DocumentSearchFilters": {
@@ -1020,6 +1112,28 @@
             }
           }
         ]
+      },
+      "CompanyCalendarResult": {
+        "type": "object",
+        "properties": {
+          "company_name": {
+            "type": "string",
+            "example": "Sanofi India Ltd"
+          },
+          "ticker": {
+            "type": "string",
+            "example": "SANOFI"
+          },
+          "security_code": {
+            "type": "string",
+            "example": "500674"
+          },
+          "result_date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-02-27T00:00:00.000Z"
+          }
+        }
       },
       "Meta": {
         "type": "object",
