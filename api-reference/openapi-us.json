@@ -587,7 +587,7 @@
           }
         }
       },
-      "8-K": {
+      "Announcement": {
         "type": "object",
         "description": "Each 8-K document is tagged with AI-generated insights, such as summary, category tags from a predefined set of categories and sentiment of the 8-K content.",
         "properties": {
@@ -619,21 +619,21 @@
           "ai_insights": {
             "type": "object",
             "properties": {
-              "filing_8k_type_id": {
-                "description": "8-K category/type ID. Example - A 8-K filing could be marked as Company Merger(ID=1)",
+              "category_id": {
+                "description": "Annoucement category ID. Example - A 8-K filing could be marked as Company Merger(ID=1)",
                 "type": "string"
               },
-              "filing_8k_type": {
+              "category_name": {
                 "description": "The category/type name. Example - A 8-K filing could be marked as Company Merger(ID=1)",
                 "type": "string"
               },
-              "summary_header": {
+              "summary_title": {
                 "type": "string",
-                "description": "AI-generated summary header for the 8-K"
+                "description": "AI-generated summary header for the 8-K/6-K filing"
               },
               "summary_text": {
                 "type": "string",
-                "description": "AI-generated summary for the 8-K"
+                "description": "AI-generated summary for the 8-K/6-K filing"
               },
               "sentiment": {
                 "type": "string",
