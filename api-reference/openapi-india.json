@@ -624,7 +624,7 @@
         }
       }
     },
-  "/api/in/v0/results-calendar": {
+    "/api/in/v0/results-calendar": {
       "get": {
         "summary": "Results Calendar API",
         "description": "API returning the paginated latest results calendar",
@@ -716,7 +716,8 @@
           }
         }
       }
-    },
+    }
+  },
   "components": {
     "schemas": {
       "DocumentSearchFilters": {
